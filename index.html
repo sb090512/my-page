@@ -567,6 +567,124 @@
             animation: splatPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, webFade 1.4s ease-in 0.6s forwards;
         }
 
+        /* Hulk Thrown Screaming Person & Ground Smash */
+        .thrown-person {
+            position: fixed;
+            width: 52px;
+            height: 52px;
+            pointer-events: none;
+            z-index: 106;
+            filter: drop-shadow(0 0 10px #39ff14);
+            transition: transform 0.55s cubic-bezier(0.25, 0.9, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scream-bubble {
+            position: absolute;
+            top: -32px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 127, 0.95);
+            color: #ffe600;
+            font-weight: 900;
+            font-size: 0.85rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            border: 1.5px solid #ffffff;
+            white-space: nowrap;
+            box-shadow: 0 0 12px var(--neon-pink);
+            animation: screamShake 0.12s infinite alternate;
+        }
+
+        @keyframes screamShake {
+            0% { transform: translateX(-52%) rotate(-6deg) scale(0.95); }
+            100% { transform: translateX(-48%) rotate(6deg) scale(1.08); }
+        }
+
+        .hulk-smash-splat {
+            position: absolute;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+            z-index: 98;
+            animation: splatPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, webFade 1.6s ease-in 0.8s forwards;
+        }
+
+        /* Dungeon System Styles */
+        .dungeon-arena {
+            position: relative;
+            width: 100%;
+            height: 360px;
+            background: radial-gradient(circle at center, rgba(25, 10, 45, 0.95), rgba(8, 5, 18, 0.98));
+            border: 2px solid var(--neon-purple);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(176, 0, 255, 0.4);
+            display: none;
+            cursor: crosshair;
+        }
+
+        .dungeon-hud {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+            pointer-events: none;
+            font-weight: 900;
+            font-size: 0.95rem;
+        }
+
+        .dungeon-hero-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 56px;
+            height: 56px;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+            filter: drop-shadow(0 0 12px var(--neon-cyan));
+            pointer-events: none;
+        }
+
+        .dungeon-enemy {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            transform: translate(-50%, -50%);
+            z-index: 12;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .dungeon-enemy:active {
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+
+        .enemy-hp-bar {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 36px;
+            height: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #fff;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .enemy-hp-fill {
+            height: 100%;
+            background: #ff007f;
+            width: 100%;
+            transition: width 0.15s;
+        }
+
         /* Wallet HUD Bar */
         .wallet-hud {
             position: fixed;
@@ -1292,8 +1410,53 @@
                     <div class="skin-desc">클릭 시 <b>+3원</b> 획득! 회전하는 <b>묠니르 망치</b>와 번개를 던집니다!</div>
                     <button class="skin-action-btn btn-buy" id="btn-thor" onclick="handleSkinAction('thor', 30)">🪙 30원 구매하기</button>
                 </div>
+
+                <!-- Hulk Skin Card -->
+                <div class="skin-card" id="card-hulk">
+                    <div class="skin-preview" style="filter: drop-shadow(0 0 12px #39ff14);">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <!-- Hulk Face -->
+                            <rect x="14" y="14" width="36" height="42" rx="10" fill="#22c55e" stroke="#39ff14" stroke-width="2.5"/>
+                            <!-- Messy Dark Hair -->
+                            <path d="M12 22C12 10 20 6 32 6C44 6 52 10 52 22L46 18L40 22L32 16L24 22L18 18L12 22Z" fill="#0f172a"/>
+                            <!-- Angry Eyebrows -->
+                            <path d="M18 27L28 31M46 27L36 31" stroke="#052e16" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Glowing Green Eyes -->
+                            <circle cx="24" cy="32" r="2.5" fill="#ffffff"/>
+                            <circle cx="40" cy="32" r="2.5" fill="#ffffff"/>
+                            <!-- Roaring Mouth -->
+                            <rect x="22" y="42" width="20" height="8" rx="2" fill="#052e16" stroke="#39ff14" stroke-width="1"/>
+                            <line x1="22" y1="46" x2="42" y2="46" stroke="#ffffff" stroke-width="2" stroke-dasharray="3 2"/>
+                        </svg>
+                    </div>
+                    <div class="skin-title">💚 헐크 (분노의 괴물)</div>
+                    <div class="skin-desc">클릭 시 <b>+5원</b> 획득! <b>"꺄아~!" 소리 지르는 사람</b>을 집어 던집니다!</div>
+                    <button class="skin-action-btn btn-buy" id="btn-hulk" onclick="handleSkinAction('hulk', 550)">🪙 550원 구매하기</button>
+                </div>
             </div>
             <div class="shop-toast" id="shopToast"></div>
+        </section>
+
+        <!-- Section 5: Neon Spider Dungeon -->
+        <section>
+            <h2 class="section-title"><span>⚔️</span> 네온 거미 소굴 던전</h2>
+            <p style="text-align: center; color: #d0cbe5; font-size: 0.9rem; margin-bottom: 20px;">
+                사방에서 몰려오는 네온 몬스터 거미들을 장착 중인 히어로의 무기로 처치하고 보상을 획득하세요!
+            </p>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <button id="dungeonToggleBtn" class="fortune-btn" style="padding: 14px 30px; font-size: 1.1rem;" onclick="toggleDungeon()">
+                    🚪 던전 입장하기
+                </button>
+            </div>
+            <div id="dungeonArena" class="dungeon-arena" onmousedown="arenaAttack(event)" ontouchstart="arenaAttack(event)">
+                <div class="dungeon-hud">
+                    <span style="color: var(--neon-cyan);">👾 처치 수: <span id="dungeonKills">0</span>마리</span>
+                    <span style="color: var(--neon-yellow);">🛡️ 웨이브: <span id="dungeonWave">1</span></span>
+                    <span style="color: var(--neon-pink);">❤️ 체력: <span id="dungeonHp">100</span>%</span>
+                </div>
+                <svg id="dungeonSvgOverlay" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:14;"></svg>
+                <div id="dungeonHeroCenter" class="dungeon-hero-center"></div>
+            </div>
         </section>
 
         <!-- Footer -->
@@ -1304,19 +1467,50 @@
 
     <!-- JavaScript logic -->
     <script>
+        /* Sound Effect Helper: Screaming Voice Synth */
+        function playScreamSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sawtooth';
+                const now = ctx.currentTime;
+                // High-pitched "Kyaaaa~!" sliding frequency
+                osc.frequency.setValueAtTime(680 + Math.random() * 140, now);
+                osc.frequency.exponentialRampToValueAtTime(980, now + 0.14);
+                osc.frequency.exponentialRampToValueAtTime(420, now + 0.52);
+
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.52);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.53);
+            } catch (e) {
+                // Ignore audio block if browser prevents autoplay
+            }
+        }
+
         /* Game State: Coins & Skins */
         let coins = 0;
-        let currentSkin = 'spidey'; // 'spidey', 'ironman', or 'thor'
+        let currentSkin = 'spidey'; // 'spidey', 'ironman', 'thor', 'hulk'
         let unlockedSkins = {
             spidey: true,
             ironman: false,
-            thor: false
+            thor: false,
+            hulk: false
         };
 
         const SKIN_REWARDS = {
             spidey: 1,
             ironman: 2,
-            thor: 3
+            thor: 3,
+            hulk: 5
         };
 
         const SKIN_SVGS = {
@@ -1346,6 +1540,17 @@
                     <circle cx="27" cy="36" r="2.5" fill="#00f3ff"/>
                     <circle cx="37" cy="36" r="2.5" fill="#00f3ff"/>
                     <path d="M22 42C22 52 27 57 32 57C37 57 42 52 42 42C38 45 26 45 22 42Z" fill="#d97706"/>
+                </svg>
+            `,
+            hulk: `
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="14" y="14" width="36" height="42" rx="10" fill="#22c55e" stroke="#39ff14" stroke-width="2.5"/>
+                    <path d="M12 22C12 10 20 6 32 6C44 6 52 10 52 22L46 18L40 22L32 16L24 22L18 18L12 22Z" fill="#0f172a"/>
+                    <path d="M18 27L28 31M46 27L36 31" stroke="#052e16" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="24" cy="32" r="2.5" fill="#ffffff"/>
+                    <circle cx="40" cy="32" r="2.5" fill="#ffffff"/>
+                    <rect x="22" y="42" width="20" height="8" rx="2" fill="#052e16" stroke="#39ff14" stroke-width="1"/>
+                    <line x1="22" y1="46" x2="42" y2="46" stroke="#ffffff" stroke-width="2" stroke-dasharray="3 2"/>
                 </svg>
             `
         };
@@ -1380,13 +1585,14 @@
                     unlockedSkins[skinName] = true;
                     updateCoinUI();
                     equipSkin(skinName);
-                    const heroLabel = skinName === 'ironman' ? '아이언맨' : '토르';
+                    const heroLabels = { ironman: '아이언맨', thor: '토르', hulk: '헐크' };
+                    const heroLabel = heroLabels[skinName] || skinName;
                     showShopToast(`🎉 ${heroLabel} 스킨 구매 및 장착 완료!`, 'var(--neon-yellow)');
                     confetti({
                         particleCount: 70,
                         spread: 65,
                         origin: { y: 0.7 },
-                        colors: ['#00f3ff', '#ffe600', '#ff007f']
+                        colors: ['#00f3ff', '#ffe600', '#ff007f', '#39ff14']
                     });
                 } else {
                     showShopToast(`❌ 코인이 부족합니다! (${price - coins}원 더 필요해요)`, 'var(--neon-pink)');
@@ -1400,11 +1606,13 @@
             if (!unlockedSkins[skinName]) return;
             currentSkin = skinName;
 
-            // Update floating character SVG
+            // Update floating character SVG & Dungeon center hero
             const wrapper = document.getElementById('heroSvgWrapper');
+            const dungeonHero = document.getElementById('dungeonHeroCenter');
             const spideyChar = document.getElementById('spideyChar');
             const webLine = document.getElementById('webLine');
             wrapper.innerHTML = SKIN_SVGS[skinName];
+            if (dungeonHero) dungeonHero.innerHTML = SKIN_SVGS[skinName];
 
             if (skinName === 'ironman') {
                 spideyChar.style.filter = 'drop-shadow(0 0 12px #ffe600)';
@@ -1414,6 +1622,10 @@
                 spideyChar.style.filter = 'drop-shadow(0 0 14px var(--neon-cyan))';
                 webLine.style.stroke = '#00f3ff';
                 webLine.style.filter = 'drop-shadow(0 0 10px #ffffff)';
+            } else if (skinName === 'hulk') {
+                spideyChar.style.filter = 'drop-shadow(0 0 15px #39ff14)';
+                webLine.style.stroke = '#39ff14';
+                webLine.style.filter = 'drop-shadow(0 0 10px #22c55e)';
             } else {
                 spideyChar.style.filter = 'drop-shadow(0 0 10px var(--neon-pink))';
                 webLine.style.stroke = 'var(--neon-cyan)';
@@ -1421,7 +1633,7 @@
             }
 
             // Update Shop Cards UI
-            const allSkins = ['spidey', 'ironman', 'thor'];
+            const allSkins = ['spidey', 'ironman', 'thor', 'hulk'];
             allSkins.forEach(s => {
                 const card = document.getElementById(`card-${s}`);
                 const btn = document.getElementById(`btn-${s}`);
@@ -1480,9 +1692,13 @@
 
                 const hintBubble = spidey.querySelector('.spidey-hint-bubble');
                 const reward = SKIN_REWARDS[currentSkin];
-                const actionWord = currentSkin === 'ironman' 
-                    ? '레이저 연사! ⚡' 
-                    : (currentSkin === 'thor' ? '망치 투척! 🔨' : '거미줄 연사! 🕸️');
+                const actionWords = {
+                    ironman: '레이저 연사! ⚡',
+                    thor: '망치 투척! 🔨',
+                    hulk: '사람 던지기! 😱',
+                    spidey: '거미줄 연사! 🕸️'
+                };
+                const actionWord = actionWords[currentSkin] || '거미줄 연사! 🕸️';
                 if (hintBubble) {
                     if (isLeftWall) {
                         hintBubble.style.left = '55px';
@@ -1584,6 +1800,57 @@
                         document.body.appendChild(splat);
                         setTimeout(() => splat.remove(), 1400);
                     }, 340);
+                } else if (currentSkin === 'hulk') {
+                    // Hulk Throws Screaming Person ("꺄아아아악~!! 😱")
+                    playScreamSound();
+                    const screams = ['꺄아아아악~!! 😱', '살려줘어어억!! 😵', '으아아아아악!! 💦', '꺄아악! 날아간다!! 😱'];
+                    const screamText = screams[Math.floor(Math.random() * screams.length)];
+
+                    const person = document.createElement('div');
+                    person.className = 'thrown-person';
+                    person.style.left = startX + 'px';
+                    person.style.top = startY + 'px';
+                    person.style.transform = 'translate(-50%, -50%) rotate(0deg) scale(0.9)';
+                    person.innerHTML = `
+                        <div class="scream-bubble">${screamText}</div>
+                        <svg width="46" height="46" viewBox="0 0 48 48" fill="none">
+                            <!-- Panicked Person Head -->
+                            <circle cx="24" cy="11" r="6" fill="#fde68a" stroke="#ff007f" stroke-width="1.5"/>
+                            <!-- Screaming Wide Open Mouth -->
+                            <ellipse cx="24" cy="13" rx="2.5" ry="3.2" fill="#991b1b"/>
+                            <!-- Flailing Arms Up in Panic -->
+                            <path d="M24 20 L10 8 M24 20 L38 8" stroke="#00f3ff" stroke-width="3.5" stroke-linecap="round"/>
+                            <!-- Torso -->
+                            <line x1="24" y1="17" x2="24" y2="32" stroke="#ffe600" stroke-width="4.5" stroke-linecap="round"/>
+                            <!-- Flailing Legs -->
+                            <path d="M24 32 L13 44 M24 32 L35 44" stroke="#ff007f" stroke-width="3.5" stroke-linecap="round"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(person);
+
+                    const deltaX = targetX - startX;
+                    const deltaY = targetY - startY;
+
+                    requestAnimationFrame(() => {
+                        person.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px) rotate(1080deg) scale(1.25)`;
+                    });
+
+                    setTimeout(() => {
+                        person.remove();
+                        // Hulk Ground Smash Impact
+                        const splat = document.createElement('div');
+                        splat.className = 'hulk-smash-splat';
+                        splat.style.left = targetX + 'px';
+                        splat.style.top = targetY + 'px';
+                        splat.innerHTML = `
+                            <svg width="110" height="110" viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="40" stroke="#39ff14" stroke-width="4" stroke-dasharray="12 6" fill="rgba(34, 197, 94, 0.3)"/>
+                                <text x="50" y="55" text-anchor="middle" fill="#ffe600" font-weight="900" font-size="18" stroke="#052e16" stroke-width="1">SMASH! 💥</text>
+                            </svg>
+                        `;
+                        document.body.appendChild(splat);
+                        setTimeout(() => splat.remove(), 1500);
+                    }, 540);
                 } else {
                     // Spider-Man Web Attack
                     line.setAttribute('class', 'shot-web-line');
@@ -1653,7 +1920,7 @@
                 if (e) e.preventDefault();
                 isHolding = true;
 
-                // Earn coins based on equipped hero (+1원 Spidey, +2원 Iron Man, +3원 Thor)
+                // Earn coins based on equipped hero (+1원 Spidey, +2원 Iron Man, +3원 Thor, +5원 Hulk)
                 const reward = SKIN_REWARDS[currentSkin] || 1;
                 coins += reward;
                 updateCoinUI();
@@ -1781,6 +2048,245 @@
                     spiderContainer.classList.remove('descend');
                 }, 400);
             }, 600);
+        }
+
+        /* Neon Spider Dungeon System */
+        let dungeonActive = false;
+        let dungeonKills = 0;
+        let dungeonWave = 1;
+        let dungeonHp = 100;
+        let dungeonEnemies = [];
+        let spawnTimer = null;
+        let moveTimer = null;
+
+        const HERO_DAMAGE = {
+            spidey: 1,
+            ironman: 2,
+            thor: 3,
+            hulk: 5
+        };
+
+        function toggleDungeon() {
+            const arena = document.getElementById('dungeonArena');
+            const btn = document.getElementById('dungeonToggleBtn');
+            const heroCenter = document.getElementById('dungeonHeroCenter');
+
+            dungeonActive = !dungeonActive;
+
+            if (dungeonActive) {
+                arena.style.display = 'block';
+                btn.innerText = '🚪 던전 나가기';
+                heroCenter.innerHTML = SKIN_SVGS[currentSkin];
+                resetDungeon();
+                spawnTimer = setInterval(spawnDungeonEnemy, 1300);
+                moveTimer = setInterval(updateDungeonEnemies, 50);
+            } else {
+                arena.style.display = 'none';
+                btn.innerText = '🚪 던전 입장하기';
+                clearInterval(spawnTimer);
+                clearInterval(moveTimer);
+                clearEnemiesDOM();
+            }
+        }
+
+        function resetDungeon() {
+            dungeonKills = 0;
+            dungeonWave = 1;
+            dungeonHp = 100;
+            clearEnemiesDOM();
+            updateDungeonHUD();
+        }
+
+        function clearEnemiesDOM() {
+            dungeonEnemies.forEach(e => e.el.remove());
+            dungeonEnemies = [];
+        }
+
+        function updateDungeonHUD() {
+            document.getElementById('dungeonKills').innerText = dungeonKills;
+            document.getElementById('dungeonWave').innerText = dungeonWave;
+            document.getElementById('dungeonHp').innerText = dungeonHp;
+        }
+
+        function spawnDungeonEnemy() {
+            if (!dungeonActive) return;
+            const arena = document.getElementById('dungeonArena');
+            const w = arena.clientWidth;
+            const h = arena.clientHeight;
+
+            // Spawn on random edge of arena
+            const edge = Math.floor(Math.random() * 4);
+            let x = 0, y = 0;
+            if (edge === 0) { x = Math.random() * w; y = 10; }
+            else if (edge === 1) { x = w - 10; y = Math.random() * h; }
+            else if (edge === 2) { x = Math.random() * w; y = h - 10; }
+            else { x = 10; y = Math.random() * h; }
+
+            const isBoss = Math.random() < 0.2;
+            const maxHp = isBoss ? (3 + dungeonWave * 2) : (1 + Math.floor(dungeonWave / 2));
+
+            const el = document.createElement('div');
+            el.className = 'dungeon-enemy';
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            const color = isBoss ? '#ffe600' : '#ff007f';
+            const size = isBoss ? 54 : 40;
+            el.style.width = size + 'px';
+            el.style.height = size + 'px';
+
+            el.innerHTML = `
+                <div class="enemy-hp-bar"><div class="enemy-hp-fill"></div></div>
+                <svg viewBox="0 0 36 36" fill="none">
+                    <circle cx="18" cy="18" r="8" fill="${color}" stroke="#00f3ff" stroke-width="1.5"/>
+                    <circle cx="18" cy="10" r="5" fill="${color}"/>
+                    <circle cx="16" cy="9" r="1.5" fill="#fff"/>
+                    <circle cx="20" cy="9" r="1.5" fill="#fff"/>
+                    <path d="M12 15 L3 8 M12 18 L2 18 M12 21 L3 28 M24 15 L33 8 M24 18 L34 18 M24 21 L33 28" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            `;
+
+            const enemyObj = {
+                id: Date.now() + Math.random(),
+                x, y,
+                hp: maxHp,
+                maxHp,
+                isBoss,
+                speed: isBoss ? 1.1 : (1.6 + dungeonWave * 0.15),
+                el
+            };
+
+            el.onmousedown = (ev) => {
+                ev.stopPropagation();
+                damageEnemy(enemyObj, ev);
+            };
+            el.ontouchstart = (ev) => {
+                ev.stopPropagation();
+                ev.preventDefault();
+                damageEnemy(enemyObj, ev);
+            };
+
+            arena.appendChild(el);
+            dungeonEnemies.push(enemyObj);
+        }
+
+        function arenaAttack(ev) {
+            if (!dungeonActive) return;
+            const arena = document.getElementById('dungeonArena');
+            const rect = arena.getBoundingClientRect();
+            const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+            const clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
+            const clickX = clientX - rect.left;
+            const clickY = clientY - rect.top;
+
+            drawDungeonProjectile(clickX, clickY);
+
+            // Splash damage check near click
+            const splashRadius = currentSkin === 'hulk' ? 75 : (currentSkin === 'thor' ? 65 : 48);
+            [...dungeonEnemies].forEach(enemy => {
+                const dist = Math.hypot(enemy.x - clickX, enemy.y - clickY);
+                if (dist <= splashRadius) {
+                    damageEnemy(enemy);
+                }
+            });
+        }
+
+        function drawDungeonProjectile(targetX, targetY) {
+            const arena = document.getElementById('dungeonArena');
+            const svg = document.getElementById('dungeonSvgOverlay');
+            const startX = arena.clientWidth / 2;
+            const startY = arena.clientHeight / 2;
+
+            if (currentSkin === 'hulk') {
+                playScreamSound();
+                const miniScream = document.createElement('div');
+                miniScream.style.position = 'absolute';
+                miniScream.style.left = targetX + 'px';
+                miniScream.style.top = targetY + 'px';
+                miniScream.style.transform = 'translate(-50%, -50%)';
+                miniScream.style.color = '#ffe600';
+                miniScream.style.fontWeight = '900';
+                miniScream.style.fontSize = '0.9rem';
+                miniScream.style.textShadow = '0 0 8px #ff007f';
+                miniScream.style.pointerEvents = 'none';
+                miniScream.innerText = '꺄아아악! 😱💥';
+                arena.appendChild(miniScream);
+                setTimeout(() => miniScream.remove(), 450);
+            }
+
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', startX);
+            line.setAttribute('y1', startY);
+            line.setAttribute('x2', targetX);
+            line.setAttribute('y2', targetY);
+            const colors = { spidey: '#00f3ff', ironman: '#ff2a00', thor: '#ffe600', hulk: '#39ff14' };
+            line.setAttribute('stroke', colors[currentSkin] || '#00f3ff');
+            line.setAttribute('stroke-width', currentSkin === 'hulk' ? '5' : '3');
+            svg.appendChild(line);
+            setTimeout(() => line.remove(), 180);
+        }
+
+        function damageEnemy(enemy, ev) {
+            if (ev) {
+                drawDungeonProjectile(enemy.x, enemy.y);
+            }
+            const dmg = HERO_DAMAGE[currentSkin] || 1;
+            enemy.hp -= dmg;
+
+            const fill = enemy.el.querySelector('.enemy-hp-fill');
+            if (fill) {
+                fill.style.width = Math.max(0, (enemy.hp / enemy.maxHp) * 100) + '%';
+            }
+
+            if (enemy.hp <= 0) {
+                const idx = dungeonEnemies.indexOf(enemy);
+                if (idx > -1) {
+                    dungeonEnemies.splice(idx, 1);
+                    enemy.el.remove();
+
+                    dungeonKills++;
+                    if (dungeonKills % 10 === 0) dungeonWave++;
+
+                    const coinGain = enemy.isBoss ? 5 : (SKIN_REWARDS[currentSkin] || 1);
+                    coins += coinGain;
+                    updateCoinUI();
+                    updateDungeonHUD();
+
+                    const arenaRect = document.getElementById('dungeonArena').getBoundingClientRect();
+                    spawnCoinPopup(arenaRect.left + enemy.x, arenaRect.top + enemy.y, coinGain);
+                }
+            }
+        }
+
+        function updateDungeonEnemies() {
+            if (!dungeonActive) return;
+            const arena = document.getElementById('dungeonArena');
+            const centerX = arena.clientWidth / 2;
+            const centerY = arena.clientHeight / 2;
+
+            [...dungeonEnemies].forEach(enemy => {
+                const dx = centerX - enemy.x;
+                const dy = centerY - enemy.y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist < 28) {
+                    // Enemy hits hero
+                    dungeonHp = Math.max(0, dungeonHp - 10);
+                    updateDungeonHUD();
+                    const idx = dungeonEnemies.indexOf(enemy);
+                    if (idx > -1) dungeonEnemies.splice(idx, 1);
+                    enemy.el.remove();
+
+                    if (dungeonHp <= 0) {
+                        showShopToast('💀 던전에서 쓰러졌습니다! 체력을 회복하고 다시 도전하세요!', 'var(--neon-pink)');
+                        resetDungeon();
+                    }
+                } else {
+                    enemy.x += (dx / dist) * enemy.speed;
+                    enemy.y += (dy / dist) * enemy.speed;
+                    enemy.el.style.left = enemy.x + 'px';
+                    enemy.el.style.top = enemy.y + 'px';
+                }
+            });
         }
     </script>
 </body>
