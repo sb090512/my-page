@@ -710,6 +710,82 @@
             text-shadow: 0 0 8px rgba(255, 230, 0, 0.6);
         }
 
+        /* Ultimate Skill HUD Button */
+        .ult-hud {
+            position: fixed;
+            top: 68px;
+            right: 15px;
+            background: linear-gradient(135deg, rgba(176, 0, 255, 0.9), rgba(255, 0, 127, 0.9));
+            border: 2px solid var(--neon-cyan);
+            border-radius: 25px;
+            padding: 8px 16px;
+            color: #fff;
+            font-weight: 900;
+            font-size: 0.9rem;
+            cursor: pointer;
+            z-index: 150;
+            box-shadow: 0 0 18px rgba(0, 243, 255, 0.6);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ult-hud:hover:not(:disabled) {
+            transform: scale(1.06);
+            box-shadow: 0 0 28px var(--neon-yellow);
+            border-color: var(--neon-yellow);
+        }
+
+        .ult-hud:disabled {
+            background: rgba(30, 25, 50, 0.85);
+            border-color: #64748b;
+            color: #94a3b8;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Ultimate Banner Flash */
+        .ult-banner {
+            position: fixed;
+            top: 22%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            font-family: 'Orbitron', 'Noto Sans KR', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-cyan);
+            background: rgba(8, 7, 17, 0.88);
+            border: 3px solid var(--neon-yellow);
+            padding: 14px 32px;
+            border-radius: 20px;
+            z-index: 999;
+            pointer-events: none;
+            white-space: nowrap;
+            animation: ultBannerAnim 1.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes ultBannerAnim {
+            0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+            20% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -80%) scale(0.95); opacity: 0; }
+        }
+
+        .screen-quake {
+            animation: screenQuake 0.55s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes screenQuake {
+            0%, 100% { transform: translate(0, 0); }
+            15% { transform: translate(-12px, 8px); }
+            30% { transform: translate(12px, -10px); }
+            45% { transform: translate(-10px, -8px); }
+            60% { transform: translate(10px, 10px); }
+            75% { transform: translate(-6px, 6px); }
+        }
+
         /* Shop & Skin Locker Styles */
         .shop-skin-grid {
             display: grid;
@@ -1097,6 +1173,11 @@
         <span style="font-size: 1.3rem;">🪙</span>
         <span class="wallet-amount" id="coinDisplay">0원</span>
     </div>
+
+    <!-- Ultimate Skill HUD Button -->
+    <button id="ultHudBtn" class="ult-hud" onclick="triggerUltimate()">
+        ⚡ 궁극기 준비완료! [Space]
+    </button>
 
     <!-- Neon City Skyline Background -->
     <div class="city-background"></div>
@@ -1949,6 +2030,191 @@
             setTimeout(moveSpidey, 1500);
         })();
 
+        /* Ultimate Skill System (Spacebar, 30s Cooldown, 2x Coin Reward) */
+        let ultCooldown = 0;
+        let ultTimerInterval = null;
+
+        function showUltBanner(titleText, borderColor = 'var(--neon-yellow)') {
+            const banner = document.createElement('div');
+            banner.className = 'ult-banner';
+            banner.style.borderColor = borderColor;
+            banner.innerText = titleText;
+            document.body.appendChild(banner);
+            setTimeout(() => banner.remove(), 1650);
+        }
+
+        function triggerUltimate() {
+            if (ultCooldown > 0) return;
+
+            // Start 30-second cooldown
+            ultCooldown = 30;
+            const ultBtn = document.getElementById('ultHudBtn');
+            ultBtn.disabled = true;
+            ultBtn.innerText = `⏳ 궁극기 쿨타임: ${ultCooldown}초`;
+
+            ultTimerInterval = setInterval(() => {
+                ultCooldown--;
+                if (ultCooldown <= 0) {
+                    clearInterval(ultTimerInterval);
+                    ultCooldown = 0;
+                    ultBtn.disabled = false;
+                    ultBtn.innerText = '⚡ 궁극기 준비완료! [Space]';
+                } else {
+                    ultBtn.innerText = `⏳ 궁극기 쿨타임: ${ultCooldown}초`;
+                }
+            }, 1000);
+
+            // Grant 2x current hero's earning
+            const baseEarn = SKIN_REWARDS[currentSkin] || 1;
+            const ultReward = baseEarn * 2;
+            coins += ultReward;
+            updateCoinUI();
+
+            const spidey = document.getElementById('spideyChar');
+            const rect = spidey.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+            spawnCoinPopup(originX, originY, ultReward);
+
+            // Execute Hero-Specific Ultimate Visuals
+            const svgLayer = document.getElementById('spideySvgLayer');
+
+            if (currentSkin === 'spidey') {
+                showUltBanner('🕷️ 궁극기: 네온 거미줄 대폭풍! (+2원)', '#00f3ff');
+                for (let i = 0; i < 12; i++) {
+                    setTimeout(() => {
+                        const tx = (window.innerWidth * 0.1) + Math.random() * (window.innerWidth * 0.8);
+                        const ty = (window.innerHeight * 0.1) + Math.random() * (window.innerHeight * 0.8);
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', originX);
+                        line.setAttribute('y1', originY);
+                        line.setAttribute('x2', tx);
+                        line.setAttribute('y2', ty);
+                        line.setAttribute('class', 'shot-web-line');
+                        line.style.strokeWidth = '4';
+                        svgLayer.appendChild(line);
+                        setTimeout(() => line.remove(), 400);
+
+                        const splat = document.createElement('div');
+                        splat.className = 'web-splat';
+                        splat.style.left = tx + 'px';
+                        splat.style.top = ty + 'px';
+                        splat.innerHTML = `<svg width="95" height="95" viewBox="0 0 100 100" fill="none"><path d="M50 0L50 100M0 50L100 50M15 15L85 85M85 15L15 85" stroke="#00f3ff" stroke-width="3"/><circle cx="50" cy="50" r="24" stroke="#ff007f" stroke-width="2.5"/></svg>`;
+                        document.body.appendChild(splat);
+                        setTimeout(() => splat.remove(), 2200);
+                    }, i * 55);
+                }
+            } else if (currentSkin === 'ironman') {
+                showUltBanner('🤖 궁극기: 유니빔 풀파워 오버드라이브! (+4원)', '#ff2a00');
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        const tx = Math.random() * window.innerWidth;
+                        const ty = Math.random() * window.innerHeight;
+                        const beam = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        beam.setAttribute('x1', originX);
+                        beam.setAttribute('y1', originY);
+                        beam.setAttribute('x2', tx);
+                        beam.setAttribute('y2', ty);
+                        beam.setAttribute('class', 'shot-laser-line');
+                        beam.style.strokeWidth = '9';
+                        svgLayer.appendChild(beam);
+                        setTimeout(() => beam.remove(), 350);
+
+                        const boom = document.createElement('div');
+                        boom.className = 'laser-splat';
+                        boom.style.left = tx + 'px';
+                        boom.style.top = ty + 'px';
+                        boom.innerHTML = `<svg width="130" height="130" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="42" fill="rgba(255, 42, 0, 0.45)" stroke="#ffe600" stroke-width="4"/><circle cx="50" cy="50" r="20" fill="#ffffff"/></svg>`;
+                        document.body.appendChild(boom);
+                        setTimeout(() => boom.remove(), 1400);
+                    }, i * 60);
+                }
+            } else if (currentSkin === 'thor') {
+                showUltBanner('⚡ 궁극기: 라그나로크 천둥 번개 강림! (+6원)', '#00f3ff');
+                document.body.classList.remove('screen-quake');
+                void document.body.offsetWidth;
+                document.body.classList.add('screen-quake');
+
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        const strikeX = (window.innerWidth * 0.12) + (i * (window.innerWidth * 0.1));
+                        const strikeY = window.innerHeight * (0.35 + Math.random() * 0.45);
+                        const bolt = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+                        bolt.setAttribute('points', `${strikeX},0 ${strikeX - 25},${strikeY * 0.4} ${strikeX + 25},${strikeY * 0.7} ${strikeX},${strikeY}`);
+                        bolt.setAttribute('fill', 'none');
+                        bolt.setAttribute('stroke', '#00f3ff');
+                        bolt.setAttribute('stroke-width', '7');
+                        bolt.style.filter = 'drop-shadow(0 0 15px #ffffff)';
+                        svgLayer.appendChild(bolt);
+                        setTimeout(() => bolt.remove(), 450);
+
+                        const shock = document.createElement('div');
+                        shock.className = 'lightning-splat';
+                        shock.style.left = strikeX + 'px';
+                        shock.style.top = strikeY + 'px';
+                        shock.innerHTML = `<svg width="120" height="120" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="42" stroke="#ffe600" stroke-width="4" fill="rgba(0, 243, 255, 0.35)"/><polygon points="55,5 30,48 48,48 42,95 72,45 52,45" fill="#ffffff"/></svg>`;
+                        document.body.appendChild(shock);
+                        setTimeout(() => shock.remove(), 1400);
+                    }, i * 80);
+                }
+            } else if (currentSkin === 'hulk') {
+                showUltBanner('💚 궁극기: 월드 브레이커 대지진! (+10원)', '#39ff14');
+                document.body.classList.remove('screen-quake');
+                void document.body.offsetWidth;
+                document.body.classList.add('screen-quake');
+                playScreamSound();
+
+                const crowdScreams = ['꺄아아아아악~!! 😱', '단체 비행이다아악!! 😵', '살려주세요 헐크님!! 💦', '으아아아악 우주까지 간다!! 🚀'];
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        const tx = Math.random() * window.innerWidth;
+                        const ty = Math.random() * window.innerHeight;
+                        const person = document.createElement('div');
+                        person.className = 'thrown-person';
+                        person.style.left = originX + 'px';
+                        person.style.top = originY + 'px';
+                        person.innerHTML = `
+                            <div class="scream-bubble">${crowdScreams[i % crowdScreams.length]}</div>
+                            <svg width="52" height="52" viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="11" r="6" fill="#fde68a" stroke="#39ff14" stroke-width="2"/>
+                                <ellipse cx="24" cy="13" rx="3" ry="3.5" fill="#991b1b"/>
+                                <path d="M24 20 L8 6 M24 20 L40 6" stroke="#00f3ff" stroke-width="4" stroke-linecap="round"/>
+                                <line x1="24" y1="17" x2="24" y2="32" stroke="#ffe600" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M24 32 L11 45 M24 32 L37 45" stroke="#ff007f" stroke-width="4" stroke-linecap="round"/>
+                            </svg>
+                        `;
+                        document.body.appendChild(person);
+                        requestAnimationFrame(() => {
+                            person.style.transform = `translate(-50%, -50%) translate(${tx - originX}px, ${ty - originY}px) rotate(1440deg) scale(1.4)`;
+                        });
+                        setTimeout(() => person.remove(), 650);
+                    }, i * 70);
+                }
+            }
+
+            // If inside Dungeon, also deal massive AoE damage to all dungeon enemies!
+            if (dungeonActive && dungeonEnemies.length > 0) {
+                [...dungeonEnemies].forEach(enemy => {
+                    enemy.hp -= (HERO_DAMAGE[currentSkin] || 1) * 4;
+                    damageEnemy(enemy);
+                });
+            }
+
+            confetti({
+                particleCount: 90,
+                spread: 85,
+                origin: { y: 0.5 }
+            });
+        }
+
+        // Listen for Spacebar press to trigger Ultimate
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                triggerUltimate();
+            }
+        });
+
         /* Flip Card Logic */
         function flipCard(cardElement) {
             cardElement.classList.toggle('flipped');
@@ -2293,7 +2559,7 @@
 <sb-widget id="sb-web" style="display:block;width:100%;max-width:640px;margin:32px auto;flex:1 1 100%;grid-column:1/-1;align-self:stretch;box-sizing:border-box"></sb-widget>
 <script>
 (function () {
-  var C = {"id":"sb-web","url":"https://script.google.com/macros/s/AKfycbx-dsGQ4cfpNxBSXYFJet8nmoIYX9ieD5PU2MQSCVyjkv3iaLKUPx1hFPufqwF-Jdy9/exec","q":"스파이더맨이 쏘는 거미줄의 거미의 색은 빨강이다.","title":"@.@","sel":"body > div:nth-child(6) > footer:nth-child(7)","pos":"before"};
+  var C = {"id":"sb-web","url":"https://script.google.com/macros/s/AKfycbx-dsGQ4cfpNxBSXYFJet8nmoIYX9ieD5PU2MQSCVyjkv3iaLKUPx1hFPufqwF-Jdy9/exec","q":"스파이더맨이 쏘는 거미줄의 거미의 색은 빨강이다.","title":"@.@","sel":"body > div:nth-child(7) > footer:nth-child(7)","pos":"before"};
   var host = document.getElementById(C.id);
   if (!host || host.sbReady) return;
   host.sbReady = true;
