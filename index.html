@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숩바이더맨의 네온 시티 🕷️✨</title>
+    <!-- Google Fonts & Canvas Confetti Library -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        /* CSS Reset & Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        :root {
+            --bg-color: #080711;
+            --neon-pink: #ff007f;
+            --neon-cyan: #00f3ff;
+            --neon-yellow: #ffe600;
+            --neon-purple: #b000ff;
+            --card-bg: rgba(20, 18, 38, 0.75);
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(176, 0, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 40%);
+            padding-bottom: 60px;
+        }
+
+        /* Ambient Cyber Grid Background & City Skyline Silhouettes */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Neon Night City Background Overlay */
+        .city-background {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45vh;
+            z-index: -1;
+            pointer-events: none;
+            background: 
+                /* City Building Silhouettes with Neon Window Lights */
+                linear-gradient(to top, rgba(8, 7, 17, 0.95) 10%, transparent 100%),
+                repeating-linear-gradient(90deg, 
+                    rgba(15, 12, 35, 0.8) 0px, 
+                    rgba(15, 12, 35, 0.8) 50px, 
+                    transparent 50px, 
+                    transparent 60px,
+                    rgba(25, 18, 48, 0.8) 60px,
+                    rgba(25, 18, 48, 0.8) 120px,
+                    transparent 120px,
+                    transparent 135px
+                );
+            box-shadow: inset 0 20px 40px rgba(0, 243, 255, 0.05);
+        }
+
+        .city-svg-buildings {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 35vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.65;
+        }
+
+        /* Spider-Man Wall Crawler Animation Component */
+        .spidey-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        .spidey-web-line {
+            position: absolute;
+            stroke: var(--neon-cyan);
+            stroke-width: 2.5;
+            stroke-dasharray: 4 2;
+            filter: drop-shadow(0 0 6px var(--neon-cyan));
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .spidey-character {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            top: 15%;
+            left: 0;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 10px var(--neon-pink));
+            transition: top 0.6s ease;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .spidey-character:hover {
+            filter: drop-shadow(0 0 15px var(--neon-cyan)) scale(1.15);
+        }
+
+        .spidey-character svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Spidey Touch Hint Bubble */
+        .spidey-hint-bubble {
+            position: absolute;
+            left: 55px;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            background: rgba(8, 7, 17, 0.9);
+            border: 1.5px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+            pointer-events: none;
+            animation: hintPulse 1.8s infinite alternate;
+        }
+
+        .spidey-hint-bubble::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-right: 6px solid var(--neon-cyan);
+        }
+
+        @keyframes hintPulse {
+            0% { transform: translateY(-50%) scale(0.95); opacity: 0.7; }
+            100% { transform: translateY(-50%) scale(1.05); opacity: 1; box-shadow: 0 0 15px var(--neon-pink); border-color: var(--neon-pink); color: #fff; }
+        }
+
+        /* Shot Web Line Animation */
+        .shot-web-line {
+            position: absolute;
+            stroke: #ffffff;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 8px var(--neon-cyan));
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: shootWeb 0.35s ease-out forwards;
+        }
+
+        @keyframes shootWeb {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Web Splat Mark Impact */
+        .web-splat {
+            position: absolute;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+            z-index: 98;
+            animation: splatPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, webFade 2.5s ease-in 1.5s forwards;
+        }
+
+        @keyframes splatPop {
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        @keyframes webFade {
+            to {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+        }
+
+        /* Tiny Neon Spider Animation */
+        .neon-spider {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+            z-index: 100;
+            filter: drop-shadow(0 0 6px var(--neon-cyan));
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease 0.8s;
+        }
+
+        .neon-spider svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Container Layout */
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* Neon Text Header */
+        header {
+            text-align: center;
+            padding: 40px 10px 20px 10px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
+            padding: 6px 16px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        h1.title {
+            font-family: 'Orbitron', 'Noto Sans KR', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-pink),
+                0 0 40px var(--neon-pink),
+                0 0 80px var(--neon-pink);
+            animation: neonPulse 2s infinite alternate;
+            line-height: 1.2;
+        }
+
+        @keyframes neonPulse {
+            0% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
+            }
+            100% {
+                text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 15px var(--neon-pink), 0 0 25px var(--neon-pink);
+            }
+        }
+
+        .subtitle {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: #d0cbe5;
+            text-shadow: 0 0 8px rgba(255,255,255,0.3);
+        }
+
+        /* Common Section Styles */
+        section {
+            margin-top: 50px;
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* 3D Flip Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            perspective: 1000px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 280px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 16px;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 2px solid transparent;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        /* Front Card Styling */
+        .flip-card-front {
+            background: linear-gradient(135deg, rgba(30, 25, 60, 0.9), rgba(15, 12, 35, 0.95));
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+        }
+
+        /* Peeking Spider Head on Card Bottom Edge */
+        .peeking-spider-head {
+            position: absolute;
+            bottom: -55px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 56px;
+            height: 56px;
+            pointer-events: auto;
+            transition: bottom 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 0 6px var(--neon-cyan));
+            z-index: 10;
+        }
+
+        .flip-card-front:hover .peeking-spider-head {
+            bottom: -6px;
+        }
+
+        /* Peeking Spider Spit Hint Label */
+        .spider-spit-hint {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            background: rgba(255, 0, 127, 0.9);
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px var(--neon-pink);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .flip-card-front:hover .spider-spit-hint {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px var(--neon-pink));
+        }
+
+        .card-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .tap-hint {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: var(--neon-cyan);
+            border: 1px dashed var(--neon-cyan);
+            padding: 4px 10px;
+            border-radius: 12px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Back Card Styling */
+        .flip-card-back {
+            background: linear-gradient(135deg, rgba(0, 50, 70, 0.95), rgba(10, 20, 40, 0.95));
+            border-color: var(--neon-cyan);
+            color: #fff;
+            transform: rotateY(180deg);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .board-spider-presenter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        /* Spider Teacher with Pointer Stick (Much Larger) */
+        .spider-teacher-svg {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 10px var(--neon-cyan));
+            animation: teacherBounce 1.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes teacherBounce {
+            0% { transform: translateY(0) rotate(-3deg); }
+            100% { transform: translateY(-4px) rotate(3deg); }
+        }
+
+        .blackboard-box {
+            background: rgba(5, 25, 20, 0.85);
+            border: 1.5px stroke var(--neon-cyan);
+            border-style: dashed;
+            border-radius: 10px;
+            padding: 10px 12px;
+            box-shadow: inset 0 0 10px rgba(0, 243, 255, 0.2);
+            width: 100%;
+        }
+
+        .card-back-title {
+            font-size: 1.1rem;
+            color: var(--neon-yellow);
+            font-weight: 700;
+        }
+
+        .card-reason {
+            font-size: 0.88rem;
+            line-height: 1.45;
+            word-break: keep-all;
+            color: #e2f8ff;
+        }
+
+        /* Spider Spit Liquid Drops Animation */
+        .spider-spit-splat {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1000;
+            transform: translate(-50%, -50%) scale(0.2);
+            animation: spitExpand 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, spitFade 2s ease-in 0.8s forwards;
+        }
+
+        .spit-text-effect {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+            white-space: nowrap;
+            animation: textPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes textPop {
+            0% { transform: translateX(-50%) scale(0.3) rotate(-10deg); opacity: 0; }
+            100% { transform: translateX(-50%) scale(1.1) rotate(0deg); opacity: 1; }
+        }
+
+        /* Coin Floating Animation */
+        .coin-pop {
+            position: fixed;
+            font-family: 'Orbitron', 'Noto Sans KR', sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 8px var(--neon-yellow), 0 0 15px var(--neon-pink);
+            pointer-events: none;
+            z-index: 200;
+            animation: coinFloat 0.8s ease-out forwards;
+        }
+
+        @keyframes coinFloat {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+            100% { transform: translate(-50%, -120%) scale(1.2); opacity: 0; }
+        }
+
+        /* Iron Man Laser Beam & Explosion */
+        .shot-laser-line {
+            position: absolute;
+            stroke: #ff2a00;
+            stroke-width: 4;
+            filter: drop-shadow(0 0 10px #ff2a00) drop-shadow(0 0 20px var(--neon-yellow));
+            stroke-dasharray: 250;
+            stroke-dashoffset: 250;
+            animation: shootWeb 0.25s ease-out forwards;
+        }
+
+        .laser-splat {
+            position: absolute;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+            z-index: 98;
+            animation: splatPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, webFade 1.5s ease-in 0.8s forwards;
+        }
+
+        /* Thor Thrown Hammer & Lightning Impact */
+        .thrown-hammer {
+            position: fixed;
+            width: 42px;
+            height: 42px;
+            pointer-events: none;
+            z-index: 105;
+            filter: drop-shadow(0 0 12px var(--neon-cyan)) drop-shadow(0 0 20px #ffffff);
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1);
+        }
+
+        .lightning-splat {
+            position: absolute;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+            z-index: 98;
+            animation: splatPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, webFade 1.4s ease-in 0.6s forwards;
+        }
+
+        /* Wallet HUD Bar */
+        .wallet-hud {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(12, 10, 28, 0.85);
+            border: 2px solid var(--neon-yellow);
+            border-radius: 30px;
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 150;
+            box-shadow: 0 0 15px rgba(255, 230, 0, 0.4);
+            backdrop-filter: blur(6px);
+        }
+
+        .wallet-amount {
+            font-family: 'Orbitron', 'Noto Sans KR', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 8px rgba(255, 230, 0, 0.6);
+        }
+
+        /* Shop & Skin Locker Styles */
+        .shop-skin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skin-card {
+            background: rgba(15, 12, 35, 0.9);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .skin-card.equipped {
+            border-color: var(--neon-yellow);
+            box-shadow: 0 0 20px rgba(255, 230, 0, 0.3);
+        }
+
+        .skin-preview {
+            width: 72px;
+            height: 72px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 10px var(--neon-pink));
+        }
+
+        .skin-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .skin-desc {
+            font-size: 0.85rem;
+            color: #b8b2d8;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .skin-action-btn {
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: 2px solid;
+            transition: all 0.2s ease;
+        }
+
+        .btn-buy {
+            background: rgba(255, 230, 0, 0.15);
+            border-color: var(--neon-yellow);
+            color: var(--neon-yellow);
+            box-shadow: 0 0 10px rgba(255, 230, 0, 0.3);
+        }
+
+        .btn-buy:hover {
+            background: var(--neon-yellow);
+            color: #080711;
+            box-shadow: 0 0 20px var(--neon-yellow);
+        }
+
+        .btn-equip {
+            background: rgba(0, 243, 255, 0.15);
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .btn-equip:hover {
+            background: var(--neon-cyan);
+            color: #080711;
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        .btn-equipped {
+            background: rgba(255, 0, 127, 0.2);
+            border-color: var(--neon-pink);
+            color: #fff;
+            cursor: default;
+        }
+
+        .shop-toast {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            min-height: 24px;
+            color: var(--neon-pink);
+        }
+
+        @keyframes spitExpand {
+            to { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        @keyframes spitFade {
+            to { opacity: 0; transform: translate(-50%, 15px) scale(0.9); }
+        }
+
+        /* OX Quiz Section */
+        .quiz-container {
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #ffffff;
+            line-height: 1.4;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .quiz-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        /* Web Patterned OX Buttons */
+        .quiz-btn {
+            position: relative;
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            border: 3px solid;
+            font-size: 2.5rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.25 ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(20, 15, 40, 0.9) 30%, rgba(5, 5, 15, 0.95) 100%);
+            outline: none;
+            overflow: hidden;
+        }
+
+        /* Spider-web overlay on buttons */
+        .quiz-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at center, transparent 30%, currentColor 31%, transparent 33%),
+                radial-gradient(circle at center, transparent 60%, currentColor 61%, transparent 63%),
+                linear-gradient(0deg, transparent 46%, currentColor 48%, currentColor 52%, transparent 54%),
+                linear-gradient(45deg, transparent 46%, currentColor 48%, currentColor 52%, transparent 54%),
+                linear-gradient(90deg, transparent 46%, currentColor 48%, currentColor 52%, transparent 54%),
+                linear-gradient(135deg, transparent 46%, currentColor 48%, currentColor 52%, transparent 54%);
+            opacity: 0.25;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .quiz-btn:hover::before {
+            opacity: 0.55;
+        }
+
+        .btn-o {
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        }
+
+        .btn-o:active, .btn-o:hover {
+            background: rgba(0, 243, 255, 0.15);
+            color: #ffffff;
+            box-shadow: 0 0 30px var(--neon-cyan);
+            transform: scale(1.08) rotate(5deg);
+        }
+
+        .btn-x {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+        }
+
+        .btn-x:active, .btn-x:hover {
+            background: rgba(255, 0, 127, 0.15);
+            color: #ffffff;
+            box-shadow: 0 0 30px var(--neon-pink);
+            transform: scale(1.08) rotate(-5deg);
+        }
+
+        .quiz-result-msg {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            min-height: 30px;
+            transition: all 0.3s;
+        }
+
+        /* Shake animation for wrong answer */
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        /* Fortune Generator Section */
+        .fortune-container {
+            position: relative;
+            text-align: center;
+        }
+
+        /* Hanging Spider Animation for Fortune Generator */
+        .hanging-spider-container {
+            position: absolute;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 120px;
+            pointer-events: none;
+            z-index: 10;
+            overflow: visible;
+        }
+
+        .hanging-web-string {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 0%;
+            background: linear-gradient(to bottom, rgba(0, 243, 255, 0.2), var(--neon-cyan));
+            box-shadow: 0 0 8px var(--neon-cyan);
+            transform: translateX(-50%);
+            transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hanging-spider-body {
+            position: absolute;
+            top: 0%;
+            left: 50%;
+            width: 32px;
+            height: 32px;
+            transform: translate(-50%, -100%) rotate(180deg);
+            filter: drop-shadow(0 0 10px var(--neon-pink));
+            opacity: 0;
+            transition: top 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
+        }
+
+        .hanging-spider-container.descend .hanging-web-string {
+            height: 100%;
+        }
+
+        .hanging-spider-container.descend .hanging-spider-body {
+            top: 100%;
+            opacity: 1;
+        }
+
+        /* Spider Web Button Design */
+        .fortune-btn {
+            position: relative;
+            background: linear-gradient(135deg, rgba(30, 0, 60, 0.9), rgba(176, 0, 255, 0.8));
+            color: #fff;
+            border: 2px solid var(--neon-pink);
+            padding: 18px 38px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(176, 0, 255, 0.6), inset 0 0 15px rgba(255, 0, 127, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            outline: none;
+            overflow: hidden;
+        }
+
+        /* Web overlay on fortune button */
+        .fortune-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: radial-gradient(circle, transparent 40%, rgba(255, 0, 127, 0.3) 41%, transparent 43%),
+                              linear-gradient(0deg, transparent 48%, rgba(0, 243, 255, 0.3) 50%, transparent 52%),
+                              linear-gradient(60deg, transparent 48%, rgba(0, 243, 255, 0.3) 50%, transparent 52%),
+                              linear-gradient(120deg, transparent 48%, rgba(0, 243, 255, 0.3) 50%, transparent 52%);
+            opacity: 0.35;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.5s ease;
+        }
+
+        .fortune-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.9), inset 0 0 20px rgba(0, 243, 255, 0.5);
+            border-color: var(--neon-cyan);
+        }
+
+        .fortune-btn:hover::after {
+            opacity: 0.6;
+            transform: rotate(15deg);
+        }
+
+        .fortune-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* Fortune Display Box */
+        .fortune-box {
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 16px;
+            background: rgba(15, 10, 30, 0.9);
+            border: 2px dashed var(--neon-yellow);
+            box-shadow: inset 0 0 15px rgba(255, 230, 0, 0.2);
+            display: none;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fortune-title {
+            font-size: 0.9rem;
+            color: var(--neon-yellow);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .fortune-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.5;
+            word-break: keep-all;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: #7d7899;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            h1.title {
+                font-size: 2.1rem;
+            }
+            .section-title {
+                font-size: 1.35rem;
+            }
+            .quiz-question {
+                font-size: 1.1rem;
+            }
+            .quiz-btn {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            .fortune-btn {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cyber Background Grid -->
+    <div class="bg-grid"></div>
+
+    <!-- Wallet HUD -->
+    <div class="wallet-hud">
+        <span style="font-size: 1.3rem;">🪙</span>
+        <span class="wallet-amount" id="coinDisplay">0원</span>
+    </div>
+
+    <!-- Neon City Skyline Background -->
+    <div class="city-background"></div>
+    <svg class="city-svg-buildings" preserveAspectRatio="none" viewBox="0 0 1200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Building Silhouettes with Neon Highlights -->
+        <path d="M0 400V220H60V260H110V180H170V400H0Z" fill="#0c091f"/>
+        <path d="M150 400V140H220V190H280V400H150Z" fill="#140d2e"/>
+        <line x1="220" y1="140" x2="220" y2="400" stroke="#00f3ff" stroke-width="2" opacity="0.4"/>
+        <path d="M260 400V250H320V210H390V400H260Z" fill="#0a081a"/>
+        <path d="M380 400V100H450V160H510V400H380Z" fill="#170f36"/>
+        <line x1="450" y1="100" x2="450" y2="400" stroke="#ff007f" stroke-width="2" opacity="0.5"/>
+        <path d="M500 400V200H570V170H640V400H500Z" fill="#0d0a21"/>
+        <path d="M630 400V120H710V400H630Z" fill="#150e33"/>
+        <path d="M700 400V230H770V190H840V400H700Z" fill="#080614"/>
+        <path d="M830 400V150H900V220H980V400H830Z" fill="#120c29"/>
+        <line x1="900" y1="150" x2="900" y2="400" stroke="#00f3ff" stroke-width="2" opacity="0.4"/>
+        <path d="M970 400V180H1050V240H1200V400H970Z" fill="#0b081c"/>
+        <!-- Neon Window Dots -->
+        <circle cx="80" cy="200" r="2" fill="#ffe600" opacity="0.8"/>
+        <circle cx="90" cy="220" r="2" fill="#00f3ff" opacity="0.8"/>
+        <circle cx="180" cy="160" r="2" fill="#ff007f" opacity="0.8"/>
+        <circle cx="195" cy="180" r="2" fill="#ffe600" opacity="0.8"/>
+        <circle cx="410" cy="130" r="2.5" fill="#00f3ff" opacity="0.9"/>
+        <circle cx="430" cy="150" r="2.5" fill="#ff007f" opacity="0.9"/>
+        <circle cx="660" cy="150" r="2" fill="#ffe600" opacity="0.8"/>
+        <circle cx="680" cy="180" r="2" fill="#00f3ff" opacity="0.8"/>
+        <circle cx="860" cy="180" r="2.5" fill="#ff007f" opacity="0.9"/>
+    </svg>
+
+    <!-- Wall Crawling Spidey Interactive Canvas Element -->
+    <div class="spidey-container">
+        <svg id="spideySvgLayer" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+            <line id="webLine" class="spidey-web-line" x1="0" y1="0" x2="0" y2="0" />
+        </svg>
+        <div id="spideyChar" class="spidey-character">
+            <div id="heroSvgWrapper" style="width: 100%; height: 100%;">
+                <!-- Neon Styled Spider-Man Icon (Default) -->
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M32 4C18 4 10 16 10 32C10 48 20 60 32 60C44 60 54 48 54 32C54 16 46 4 32 4Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"/>
+                    <path d="M14 26C18 24 26 26 28 36C20 38 15 34 14 26Z" fill="#ffffff" stroke="#000" stroke-width="2"/>
+                    <path d="M50 26C46 24 38 26 36 36C44 38 49 34 50 26Z" fill="#ffffff" stroke="#000" stroke-width="2"/>
+                    <path d="M32 4V60M10 32H54M16 16L48 48M48 16L16 48" stroke="rgba(0,0,0,0.3)" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <!-- Hint Tooltip Bubble -->
+            <div class="spidey-hint-bubble">👈 누르면 +1원! 꾹~ 연사! 🕸️</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="hero-badge">WELCOME TO NEON CITY</div>
+            <h1 class="title">숩바이더맨 🕷️⚡</h1>
+            <p class="subtitle">도시의 밤을 누비는 숩바이더맨의 비밀 공간에 오신 것을 환영합니다!</p>
+        </header>
+
+        <!-- Section 1: Likes (Flip Cards) -->
+        <section>
+            <h2 class="section-title"><span>💖</span> 내가 좋아하는 3가지 (클릭해 봐!)</h2>
+            <div class="cards-grid">
+                
+                <!-- Card 1: Drawing -->
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-icon">🎨</div>
+                            <div class="card-name">그림 그리기</div>
+                            <div class="tap-hint">TAP TO FLIP ↺</div>
+                            <!-- Peeking Spider Head Icon SVG -->
+                            <div class="peeking-spider-head" onclick="spitVenom(event)">
+                                <div class="spider-spit-hint">💧 날 누르면 침 뱉음!</div>
+                                <svg viewBox="0 0 44 44" fill="none">
+                                    <path d="M7 26C7 15 14 8 22 8C30 8 37 15 37 26V38H7V26Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"/>
+                                    <circle cx="16" cy="20" r="2.5" fill="#ffffff"/>
+                                    <circle cx="28" cy="20" r="2.5" fill="#ffffff"/>
+                                    <circle cx="16" cy="20" r="1" fill="#080711"/>
+                                    <circle cx="28" cy="20" r="1" fill="#080711"/>
+                                    <circle cx="12" cy="25" r="2" fill="#ffe600" opacity="0.6"/>
+                                    <circle cx="32" cy="25" r="2" fill="#ffe600" opacity="0.6"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="board-spider-presenter">
+                                <!-- Spider Teacher with Pointer Stick SVG -->
+                                <svg class="spider-teacher-svg" viewBox="0 0 48 48" fill="none">
+                                    <circle cx="20" cy="24" r="8" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+                                    <circle cx="20" cy="14" r="5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+                                    <circle cx="18" cy="13" r="1.2" fill="#fff"/>
+                                    <circle cx="22" cy="13" r="1.2" fill="#fff"/>
+                                    <!-- Legs -->
+                                    <path d="M15 22 L5 16 M15 24 L3 24 M15 26 L5 32" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M25 22 L32 18 M25 26 L32 30" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"/>
+                                    <!-- Pointer Stick arm pointing right towards blackboard -->
+                                    <path d="M24 24 L44 14" stroke="#ffe600" stroke-width="2.5" stroke-linecap="round"/>
+                                    <circle cx="44" cy="14" r="2" fill="#ffe600"/>
+                                </svg>
+                                <div class="card-back-title">🎨 왜 좋아할까?</div>
+                            </div>
+                            <div class="blackboard-box">
+                                <div class="card-reason">
+                                    낙서로 시작했지만 정신 차려보면 거미줄 패턴을 1000번 그리고 있음! 마법의 붓 한 자루면 세상을 거미줄로 물들일 수 있답니다.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Gaming -->
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-icon">🎮</div>
+                            <div class="card-name">게임 하기</div>
+                            <div class="tap-hint">TAP TO FLIP ↺</div>
+                            <!-- Peeking Spider Head Icon SVG -->
+                            <div class="peeking-spider-head" onclick="spitVenom(event)">
+                                <div class="spider-spit-hint">💧 날 누르면 침 뱉음!</div>
+                                <svg viewBox="0 0 44 44" fill="none">
+                                    <path d="M7 26C7 15 14 8 22 8C30 8 37 15 37 26V38H7V26Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"/>
+                                    <circle cx="16" cy="20" r="2.5" fill="#ffffff"/>
+                                    <circle cx="28" cy="20" r="2.5" fill="#ffffff"/>
+                                    <circle cx="16" cy="20" r="1" fill="#080711"/>
+                                    <circle cx="28" cy="20" r="1" fill="#080711"/>
+                                    <circle cx="12" cy="25" r="2" fill="#ffe600" opacity="0.6"/>
+                                    <circle cx="32" cy="25" r="2" fill="#ffe600" opacity="0.6"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="board-spider-presenter">
+                                <!-- Spider Teacher with Pointer Stick SVG -->
+                                <svg class="spider-teacher-svg" viewBox="0 0 48 48" fill="none">
+                                    <circle cx="20" cy="24" r="8" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+                                    <circle cx="20" cy="14" r="5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+                                    <circle cx="18" cy="13" r="1.2" fill="#fff"/>
+                                    <circle cx="22" cy="13" r="1.2" fill="#fff"/>
+                                    <!-- Legs -->
+                                    <path d="M15 22 L5 16 M15 24 L3 24 M15 26 L5 32" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M25 22 L32 18 M25 26 L32 30" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"/>
+                                    <!-- Pointer Stick arm pointing right towards blackboard -->
+                                    <path d="M24 24 L44 14" stroke="#ffe600" stroke-width="2.5" stroke-linecap="round"/>
+                                    <circle cx="44" cy="14" r="2" fill="#ffe600"/>
+                                </svg>
+                                <div class="card-back-title">🎮 왜 좋아할까?</div>
+                            </div>
+                            <div class="blackboard-box">
+                                <div class="card-reason">
+                                    현실에선 빌딩 사이를 날아다닐 수 없으니, 게임 속에서 대신 날아다닙니다! 피지컬 1000% 가동해 랭크 올릴 때가 제일 짜릿해요.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Kimchi Fried Rice -->
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-icon">🍳</div>
+                            <div class="card-name">김치볶음밥</div>
+                            <div class="tap-hint">TAP TO FLIP ↺</div>
+                            <!-- Peeking Spider Head Icon SVG -->
+                            <div class="peeking-spider-head" onclick="spitVenom(event)">
+                                <div class="spider-spit-hint">💧 날 누르면 침 뱉음!</div>
+                                <svg viewBox="0 0 44 44" fill="none">
+                                    <path d="M7 26C7 15 14 8 22 8C30 8 37 15 37 26V38H7V26Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"/>
+                                    <circle cx="16" cy="20" r="2.5" fill="#ffffff"/>
+                                    <circle cx="28" cy="20" r="2.5" fill="#ffffff"/>
+                                    <circle cx="16" cy="20" r="1" fill="#080711"/>
+                                    <circle cx="28" cy="20" r="1" fill="#080711"/>
+                                    <circle cx="12" cy="25" r="2" fill="#ffe600" opacity="0.6"/>
+                                    <circle cx="32" cy="25" r="2" fill="#ffe600" opacity="0.6"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="board-spider-presenter">
+                                <!-- Spider Teacher with Pointer Stick SVG -->
+                                <svg class="spider-teacher-svg" viewBox="0 0 48 48" fill="none">
+                                    <circle cx="20" cy="24" r="8" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+                                    <circle cx="20" cy="14" r="5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+                                    <circle cx="18" cy="13" r="1.2" fill="#fff"/>
+                                    <circle cx="22" cy="13" r="1.2" fill="#fff"/>
+                                    <!-- Legs -->
+                                    <path d="M15 22 L5 16 M15 24 L3 24 M15 26 L5 32" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M25 22 L32 18 M25 26 L32 30" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"/>
+                                    <!-- Pointer Stick arm pointing right towards blackboard -->
+                                    <path d="M24 24 L44 14" stroke="#ffe600" stroke-width="2.5" stroke-linecap="round"/>
+                                    <circle cx="44" cy="14" r="2" fill="#ffe600"/>
+                                </svg>
+                                <div class="card-back-title">🍳 왜 좋아할까?</div>
+                            </div>
+                            <div class="blackboard-box">
+                                <div class="card-reason">
+                                    지구를 구하려면 탄수화물 충전은 필수! 반숙 계란후라이 노른자를 터뜨려 쓱쓱 비벼 먹으면 거미줄 파워가 300% 상승합니다.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 2: OX Quiz -->
+        <section>
+            <h2 class="section-title"><span>❓</span> 숩바이더맨 OX 퀴즈</h2>
+            <div class="quiz-container">
+                <div class="quiz-question">"숩바이더맨의 키는 170cm가 넘을까?"</div>
+                <div class="quiz-buttons">
+                    <button class="quiz-btn btn-o" onclick="checkAnswer(true)">O</button>
+                    <button class="quiz-btn btn-x" onclick="checkAnswer(false)">X</button>
+                </div>
+                <div class="quiz-result-msg" id="quizResult"></div>
+            </div>
+        </section>
+
+        <!-- Section 3: Daily Fortune Generator -->
+        <section>
+            <h2 class="section-title"><span>🔮</span> 오늘의 네온 운세 뽑기</h2>
+            <div class="fortune-container">
+                <!-- Hanging Spider Animation Elements -->
+                <div id="hangingSpiderContainer" class="hanging-spider-container">
+                    <div class="hanging-web-string"></div>
+                    <div class="hanging-spider-body">
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <circle cx="16" cy="16" r="7" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+                            <circle cx="16" cy="8" r="5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"/>
+                            <!-- Glowing Eyes -->
+                            <circle cx="14" cy="7" r="1.5" fill="#ffffff"/>
+                            <circle cx="18" cy="7" r="1.5" fill="#ffffff"/>
+                            <!-- Spider Legs -->
+                            <path d="M11 14 L3 7 M11 17 L1 17 M11 20 L3 26 M11 22 L5 31" stroke="#00f3ff" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M21 14 L29 7 M21 17 L31 17 M21 20 L29 26 M21 22 L27 31" stroke="#00f3ff" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <button class="fortune-btn" onclick="generateFortune()">
+                    <span>🕸️ 운세 거미줄 당기기 🕸️</span>
+                </button>
+                <div class="fortune-box" id="fortuneBox">
+                    <div class="fortune-title">★ TODAY'S FORTUNE ★</div>
+                    <div class="fortune-text" id="fortuneText"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Hero Shop & Skin Locker -->
+        <section>
+            <h2 class="section-title"><span>🛒</span> 네온 히어로 상점 & 스킨 보관함</h2>
+            <p style="text-align: center; color: #d0cbe5; font-size: 0.9rem; margin-bottom: 20px;">
+                벽을 타는 히어로를 클릭해 <b>1원씩</b> 모아서 새로운 히어로 스킨을 해금하세요!
+            </p>
+            <div class="shop-skin-grid">
+                <!-- Spider-Man Skin Card -->
+                <div class="skin-card equipped" id="card-spidey">
+                    <div class="skin-preview">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <path d="M32 4C18 4 10 16 10 32C10 48 20 60 32 60C44 60 54 48 54 32C54 16 46 4 32 4Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"/>
+                            <path d="M14 26C18 24 26 26 28 36C20 38 15 34 14 26Z" fill="#ffffff" stroke="#000" stroke-width="2"/>
+                            <path d="M50 26C46 24 38 26 36 36C44 38 49 34 50 26Z" fill="#ffffff" stroke="#000" stroke-width="2"/>
+                            <path d="M32 4V60M10 32H54M16 16L48 48M48 16L16 48" stroke="rgba(0,0,0,0.3)" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div class="skin-title">🕷️ 숩바이더맨 (기본)</div>
+                    <div class="skin-desc">벽을 타고 날아다니며 화려한 네온 거미줄과 새끼 거미를 발사합니다.</div>
+                    <button class="skin-action-btn btn-equipped" id="btn-spidey" onclick="equipSkin('spidey')">✅ 장착 중</button>
+                </div>
+
+                <!-- Iron Man Skin Card -->
+                <div class="skin-card" id="card-ironman">
+                    <div class="skin-preview" style="filter: drop-shadow(0 0 10px #ffe600);">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <!-- Helmet Red Outer -->
+                            <path d="M32 4C19 4 12 14 12 30C12 46 20 58 32 60C44 58 52 46 52 30C52 14 45 4 32 4Z" fill="#e60026" stroke="#ffe600" stroke-width="2"/>
+                            <!-- Gold Faceplate -->
+                            <path d="M20 16L26 22H38L44 16L46 34L39 50H25L18 34L20 16Z" fill="#ffd700" stroke="#990000" stroke-width="1.5"/>
+                            <!-- Glowing Cyan Eyes -->
+                            <polygon points="20,28 29,30 28,33 19,31" fill="#00f3ff"/>
+                            <polygon points="44,28 35,30 36,33 45,31" fill="#00f3ff"/>
+                            <!-- Mouth Slit -->
+                            <line x1="26" y1="43" x2="38" y2="43" stroke="#990000" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="skin-title">🤖 아이언맨 (마크 85)</div>
+                    <div class="skin-desc">클릭 시 <b>+2원</b> 획득! 강렬한 <b>리펄서 레이저 빔</b>을 쏩니다!</div>
+                    <button class="skin-action-btn btn-buy" id="btn-ironman" onclick="handleSkinAction('ironman', 15)">🪙 15원 구매하기</button>
+                </div>
+
+                <!-- Thor Skin Card -->
+                <div class="skin-card" id="card-thor">
+                    <div class="skin-preview" style="filter: drop-shadow(0 0 12px var(--neon-cyan));">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <!-- Winged Helmet -->
+                            <path d="M18 28C18 16 24 10 32 10C40 10 46 16 46 28V36H18V28Z" fill="#94a3b8" stroke="#00f3ff" stroke-width="2"/>
+                            <!-- Helmet Wings -->
+                            <path d="M18 22L6 10L12 26L18 28Z" fill="#e2e8f0" stroke="#00f3ff" stroke-width="1.5"/>
+                            <path d="M46 22L58 10L52 26L46 28Z" fill="#e2e8f0" stroke="#00f3ff" stroke-width="1.5"/>
+                            <!-- Face & Glowing Lightning Eyes -->
+                            <path d="M22 30H42V46C42 52 37 56 32 56C27 56 22 52 22 46V30Z" fill="#fde68a"/>
+                            <circle cx="27" cy="36" r="2.5" fill="#00f3ff" filter="drop-shadow(0 0 4px #00f3ff)"/>
+                            <circle cx="37" cy="36" r="2.5" fill="#00f3ff" filter="drop-shadow(0 0 4px #00f3ff)"/>
+                            <!-- Beard -->
+                            <path d="M22 42C22 52 27 57 32 57C37 57 42 52 42 42C38 45 26 45 22 42Z" fill="#d97706"/>
+                        </svg>
+                    </div>
+                    <div class="skin-title">⚡ 토르 (천둥의 신)</div>
+                    <div class="skin-desc">클릭 시 <b>+3원</b> 획득! 회전하는 <b>묠니르 망치</b>와 번개를 던집니다!</div>
+                    <button class="skin-action-btn btn-buy" id="btn-thor" onclick="handleSkinAction('thor', 30)">🪙 30원 구매하기</button>
+                </div>
+            </div>
+            <div class="shop-toast" id="shopToast"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>© 2026 SOOBIDER-MAN. All rights reserved in Neon City.</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        /* Game State: Coins & Skins */
+        let coins = 0;
+        let currentSkin = 'spidey'; // 'spidey', 'ironman', or 'thor'
+        let unlockedSkins = {
+            spidey: true,
+            ironman: false,
+            thor: false
+        };
+
+        const SKIN_REWARDS = {
+            spidey: 1,
+            ironman: 2,
+            thor: 3
+        };
+
+        const SKIN_SVGS = {
+            spidey: `
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M32 4C18 4 10 16 10 32C10 48 20 60 32 60C44 60 54 48 54 32C54 16 46 4 32 4Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"/>
+                    <path d="M14 26C18 24 26 26 28 36C20 38 15 34 14 26Z" fill="#ffffff" stroke="#000" stroke-width="2"/>
+                    <path d="M50 26C46 24 38 26 36 36C44 38 49 34 50 26Z" fill="#ffffff" stroke="#000" stroke-width="2"/>
+                    <path d="M32 4V60M10 32H54M16 16L48 48M48 16L16 48" stroke="rgba(0,0,0,0.3)" stroke-width="1.5"/>
+                </svg>
+            `,
+            ironman: `
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M32 4C19 4 12 14 12 30C12 46 20 58 32 60C44 58 52 46 52 30C52 14 45 4 32 4Z" fill="#e60026" stroke="#ffe600" stroke-width="2"/>
+                    <path d="M20 16L26 22H38L44 16L46 34L39 50H25L18 34L20 16Z" fill="#ffd700" stroke="#990000" stroke-width="1.5"/>
+                    <polygon points="20,28 29,30 28,33 19,31" fill="#00f3ff"/>
+                    <polygon points="44,28 35,30 36,33 45,31" fill="#00f3ff"/>
+                    <line x1="26" y1="43" x2="38" y2="43" stroke="#990000" stroke-width="2"/>
+                </svg>
+            `,
+            thor: `
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 28C18 16 24 10 32 10C40 10 46 16 46 28V36H18V28Z" fill="#94a3b8" stroke="#00f3ff" stroke-width="2"/>
+                    <path d="M18 22L6 10L12 26L18 28Z" fill="#e2e8f0" stroke="#00f3ff" stroke-width="1.5"/>
+                    <path d="M46 22L58 10L52 26L46 28Z" fill="#e2e8f0" stroke="#00f3ff" stroke-width="1.5"/>
+                    <path d="M22 30H42V46C42 52 37 56 32 56C27 56 22 52 22 46V30Z" fill="#fde68a"/>
+                    <circle cx="27" cy="36" r="2.5" fill="#00f3ff"/>
+                    <circle cx="37" cy="36" r="2.5" fill="#00f3ff"/>
+                    <path d="M22 42C22 52 27 57 32 57C37 57 42 52 42 42C38 45 26 45 22 42Z" fill="#d97706"/>
+                </svg>
+            `
+        };
+
+        function updateCoinUI() {
+            document.getElementById('coinDisplay').innerText = `${coins}원`;
+        }
+
+        function spawnCoinPopup(x, y, amount) {
+            const pop = document.createElement('div');
+            pop.className = 'coin-pop';
+            pop.style.left = x + 'px';
+            pop.style.top = (y - 20) + 'px';
+            pop.innerText = `+${amount}원 🪙`;
+            document.body.appendChild(pop);
+            setTimeout(() => pop.remove(), 800);
+        }
+
+        function showShopToast(msg, color = 'var(--neon-cyan)') {
+            const toast = document.getElementById('shopToast');
+            toast.style.color = color;
+            toast.innerText = msg;
+            setTimeout(() => {
+                if (toast.innerText === msg) toast.innerText = '';
+            }, 3000);
+        }
+
+        function handleSkinAction(skinName, price) {
+            if (!unlockedSkins[skinName]) {
+                if (coins >= price) {
+                    coins -= price;
+                    unlockedSkins[skinName] = true;
+                    updateCoinUI();
+                    equipSkin(skinName);
+                    const heroLabel = skinName === 'ironman' ? '아이언맨' : '토르';
+                    showShopToast(`🎉 ${heroLabel} 스킨 구매 및 장착 완료!`, 'var(--neon-yellow)');
+                    confetti({
+                        particleCount: 70,
+                        spread: 65,
+                        origin: { y: 0.7 },
+                        colors: ['#00f3ff', '#ffe600', '#ff007f']
+                    });
+                } else {
+                    showShopToast(`❌ 코인이 부족합니다! (${price - coins}원 더 필요해요)`, 'var(--neon-pink)');
+                }
+            } else {
+                equipSkin(skinName);
+            }
+        }
+
+        function equipSkin(skinName) {
+            if (!unlockedSkins[skinName]) return;
+            currentSkin = skinName;
+
+            // Update floating character SVG
+            const wrapper = document.getElementById('heroSvgWrapper');
+            const spideyChar = document.getElementById('spideyChar');
+            const webLine = document.getElementById('webLine');
+            wrapper.innerHTML = SKIN_SVGS[skinName];
+
+            if (skinName === 'ironman') {
+                spideyChar.style.filter = 'drop-shadow(0 0 12px #ffe600)';
+                webLine.style.stroke = '#ff2a00';
+                webLine.style.filter = 'drop-shadow(0 0 8px #ffe600)';
+            } else if (skinName === 'thor') {
+                spideyChar.style.filter = 'drop-shadow(0 0 14px var(--neon-cyan))';
+                webLine.style.stroke = '#00f3ff';
+                webLine.style.filter = 'drop-shadow(0 0 10px #ffffff)';
+            } else {
+                spideyChar.style.filter = 'drop-shadow(0 0 10px var(--neon-pink))';
+                webLine.style.stroke = 'var(--neon-cyan)';
+                webLine.style.filter = 'drop-shadow(0 0 6px var(--neon-cyan))';
+            }
+
+            // Update Shop Cards UI
+            const allSkins = ['spidey', 'ironman', 'thor'];
+            allSkins.forEach(s => {
+                const card = document.getElementById(`card-${s}`);
+                const btn = document.getElementById(`btn-${s}`);
+                if (!card || !btn) return;
+
+                if (s === skinName) {
+                    card.classList.add('equipped');
+                    btn.className = 'skin-action-btn btn-equipped';
+                    btn.innerText = '✅ 장착 중';
+                } else {
+                    card.classList.remove('equipped');
+                    if (unlockedSkins[s]) {
+                        btn.className = 'skin-action-btn btn-equip';
+                        btn.innerText = '🔄 장착하기';
+                    }
+                }
+            });
+        }
+
+        /* Spidey / Hero Wall Crawling & Shooting Animation Logic */
+        (function initSpideyAnimation() {
+            const spidey = document.getElementById('spideyChar');
+            const webLine = document.getElementById('webLine');
+            const svgLayer = document.getElementById('spideySvgLayer');
+
+            let isLeftWall = true;
+            let currentY = 120; // Top offset in px
+            let isHolding = false;
+            let rapidFireInterval = null;
+
+            function moveSpidey() {
+                if (isHolding) {
+                    setTimeout(moveSpidey, 2000);
+                    return;
+                }
+
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+
+                const targetY = Math.random() * (screenHeight * 0.7) + (screenHeight * 0.1);
+                const startX = isLeftWall ? 25 : screenWidth - 25;
+                const targetX = isLeftWall ? screenWidth - 25 : 25;
+
+                webLine.setAttribute('x1', startX);
+                webLine.setAttribute('y1', currentY);
+                webLine.setAttribute('x2', targetX);
+                webLine.setAttribute('y2', targetY);
+                webLine.style.opacity = '1';
+
+                spidey.style.transition = 'all 1.8s cubic-bezier(0.45, 0.05, 0.55, 0.95)';
+                spidey.style.left = targetX + 'px';
+                spidey.style.top = targetY + 'px';
+
+                const flipAngle = isLeftWall ? 45 : -45;
+                spidey.style.transform = `translate(-50%, -50%) rotate(${flipAngle}deg)`;
+
+                const hintBubble = spidey.querySelector('.spidey-hint-bubble');
+                const reward = SKIN_REWARDS[currentSkin];
+                const actionWord = currentSkin === 'ironman' 
+                    ? '레이저 연사! ⚡' 
+                    : (currentSkin === 'thor' ? '망치 투척! 🔨' : '거미줄 연사! 🕸️');
+                if (hintBubble) {
+                    if (isLeftWall) {
+                        hintBubble.style.left = '55px';
+                        hintBubble.style.right = 'auto';
+                        hintBubble.innerText = `👈 누르면 +${reward}원! 꾹~ ${actionWord}`;
+                    } else {
+                        hintBubble.style.left = 'auto';
+                        hintBubble.style.right = '55px';
+                        hintBubble.innerText = `+${reward}원! 눌러서 ${actionWord}👉`;
+                    }
+                }
+
+                setTimeout(() => {
+                    webLine.style.opacity = '0';
+                    spidey.style.transform = `translate(-50%, -50%) scaleX(${isLeftWall ? -1 : 1})`;
+                }, 1800);
+
+                isLeftWall = !isLeftWall;
+                currentY = targetY;
+
+                setTimeout(moveSpidey, 3500 + Math.random() * 1500);
+            }
+
+            function shootHeroAttack() {
+                const rect = spidey.getBoundingClientRect();
+                const startX = rect.left + rect.width / 2;
+                const startY = rect.top + rect.height / 2;
+
+                const targetX = Math.random() * (window.innerWidth * 0.8) + (window.innerWidth * 0.1);
+                const targetY = Math.random() * (window.innerHeight * 0.8) + (window.innerHeight * 0.1);
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', startX);
+                line.setAttribute('y1', startY);
+                line.setAttribute('x2', targetX);
+                line.setAttribute('y2', targetY);
+
+                if (currentSkin === 'ironman') {
+                    // Iron Man Laser Beam Attack
+                    line.setAttribute('class', 'shot-laser-line');
+                    svgLayer.appendChild(line);
+
+                    const splat = document.createElement('div');
+                    splat.className = 'laser-splat';
+                    splat.style.left = targetX + 'px';
+                    splat.style.top = targetY + 'px';
+                    splat.innerHTML = `
+                        <svg width="85" height="85" viewBox="0 0 100 100" fill="none">
+                            <polygon points="50,5 62,35 95,35 68,55 78,88 50,68 22,88 32,55 5,35 38,35" fill="rgba(255, 230, 0, 0.6)" stroke="#ff2a00" stroke-width="3"/>
+                            <circle cx="50" cy="50" r="16" fill="#ffffff" filter="drop-shadow(0 0 10px #00f3ff)"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(splat);
+
+                    setTimeout(() => line.remove(), 250);
+                    setTimeout(() => splat.remove(), 1500);
+                } else if (currentSkin === 'thor') {
+                    // Thor Spinning Hammer (Mjolnir) Throw & Lightning Attack
+                    const hammer = document.createElement('div');
+                    hammer.className = 'thrown-hammer';
+                    hammer.style.left = startX + 'px';
+                    hammer.style.top = startY + 'px';
+                    hammer.style.transform = 'translate(-50%, -50%) rotate(0deg) scale(0.8)';
+                    hammer.innerHTML = `
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <!-- Hammer Head -->
+                            <rect x="10" y="6" width="28" height="18" rx="3" fill="#94a3b8" stroke="#00f3ff" stroke-width="2.5"/>
+                            <line x1="15" y1="6" x2="15" y2="24" stroke="#e2e8f0" stroke-width="1.5"/>
+                            <line x1="33" y1="6" x2="33" y2="24" stroke="#e2e8f0" stroke-width="1.5"/>
+                            <!-- Handle -->
+                            <rect x="21" y="24" width="6" height="18" rx="2" fill="#92400e" stroke="#ffe600" stroke-width="1.5"/>
+                            <!-- Leather Strap -->
+                            <path d="M24 42C24 46 28 47 29 44" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(hammer);
+
+                    const deltaX = targetX - startX;
+                    const deltaY = targetY - startY;
+
+                    requestAnimationFrame(() => {
+                        hammer.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px) rotate(720deg) scale(1.25)`;
+                    });
+
+                    setTimeout(() => {
+                        hammer.remove();
+                        // Lightning Impact Explosion
+                        const splat = document.createElement('div');
+                        splat.className = 'lightning-splat';
+                        splat.style.left = targetX + 'px';
+                        splat.style.top = targetY + 'px';
+                        splat.innerHTML = `
+                            <svg width="95" height="95" viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="35" stroke="#00f3ff" stroke-width="3" stroke-dasharray="10 6" fill="rgba(0, 243, 255, 0.25)"/>
+                                <polygon points="55,5 30,48 48,48 42,95 72,45 52,45" fill="#ffffff" stroke="#00f3ff" stroke-width="2"/>
+                                <path d="M15 25 L35 45 M85 25 L65 45 M15 75 L35 55 M85 75 L65 55" stroke="#ffe600" stroke-width="3" stroke-linecap="round"/>
+                            </svg>
+                        `;
+                        document.body.appendChild(splat);
+                        setTimeout(() => splat.remove(), 1400);
+                    }, 340);
+                } else {
+                    // Spider-Man Web Attack
+                    line.setAttribute('class', 'shot-web-line');
+                    svgLayer.appendChild(line);
+
+                    const splat = document.createElement('div');
+                    splat.className = 'web-splat';
+                    splat.style.left = targetX + 'px';
+                    splat.style.top = targetY + 'px';
+                    splat.innerHTML = `
+                        <svg width="75" height="75" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 0L50 100M0 50L100 50M15 15L85 85M85 15L15 85" stroke="#00f3ff" stroke-width="2.5" opacity="0.9"/>
+                            <circle cx="50" cy="50" r="14" stroke="#ffffff" stroke-width="2" fill="rgba(0,243,255,0.3)"/>
+                            <circle cx="50" cy="50" r="28" stroke="#ff007f" stroke-width="1.5" stroke-dasharray="4 3"/>
+                            <circle cx="50" cy="50" r="42" stroke="#ffe600" stroke-width="1" stroke-dasharray="2 4" opacity="0.7"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(splat);
+
+                    spawnBabySpiders(targetX, targetY);
+
+                    setTimeout(() => line.remove(), 350);
+                    setTimeout(() => splat.remove(), 2500);
+                }
+
+                if (navigator.vibrate) {
+                    navigator.vibrate(15);
+                }
+            }
+
+            function spawnBabySpiders(originX, originY) {
+                const spiderCount = 10;
+                
+                for (let i = 0; i < spiderCount; i++) {
+                    const spider = document.createElement('div');
+                    spider.className = 'neon-spider';
+                    spider.style.left = originX + 'px';
+                    spider.style.top = originY + 'px';
+                    
+                    const color = i % 2 === 0 ? '#00f3ff' : '#ff007f';
+                    spider.innerHTML = `
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <circle cx="16" cy="16" r="6" fill="${color}"/>
+                            <circle cx="16" cy="9" r="4" fill="${color}"/>
+                            <path d="M12 14 L4 8 M12 16 L2 16 M12 18 L4 24 M12 20 L6 30" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M20 14 L28 8 M20 16 L30 16 M20 18 L28 24 M20 20 L26 30" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(spider);
+
+                    const angle = (Math.PI * 2 * i / spiderCount) + (Math.random() * 0.5 - 0.25);
+                    const runDistance = Math.max(window.innerWidth, window.innerHeight) * 0.8;
+                    const destX = Math.cos(angle) * runDistance;
+                    const destY = Math.sin(angle) * runDistance;
+                    const rotationDeg = (angle * 180 / Math.PI) + 90;
+
+                    requestAnimationFrame(() => {
+                        spider.style.transform = `translate(-50%, -50%) translate(${destX}px, ${destY}px) rotate(${rotationDeg}deg)`;
+                        spider.style.opacity = '0';
+                    });
+
+                    setTimeout(() => spider.remove(), 1400);
+                }
+            }
+
+            function startRapidFire(e) {
+                if (e) e.preventDefault();
+                isHolding = true;
+
+                // Earn coins based on equipped hero (+1원 Spidey, +2원 Iron Man, +3원 Thor)
+                const reward = SKIN_REWARDS[currentSkin] || 1;
+                coins += reward;
+                updateCoinUI();
+                const rect = spidey.getBoundingClientRect();
+                spawnCoinPopup(rect.left + rect.width / 2, rect.top, reward);
+
+                shootHeroAttack();
+                rapidFireInterval = setInterval(shootHeroAttack, 60);
+            }
+
+            function stopRapidFire() {
+                isHolding = false;
+                if (rapidFireInterval) {
+                    clearInterval(rapidFireInterval);
+                    rapidFireInterval = null;
+                }
+            }
+
+            spidey.addEventListener('mousedown', startRapidFire);
+            window.addEventListener('mouseup', stopRapidFire);
+
+            spidey.addEventListener('touchstart', startRapidFire, { passive: false });
+            window.addEventListener('touchend', stopRapidFire);
+            window.addEventListener('touchcancel', stopRapidFire);
+
+            setTimeout(moveSpidey, 1500);
+        })();
+
+        /* Flip Card Logic */
+        function flipCard(cardElement) {
+            cardElement.classList.toggle('flipped');
+        }
+
+        /* Spit Venom Attack on Peeking Spider Head Click */
+        function spitVenom(event) {
+            event.stopPropagation(); // Prevents flipping the card
+
+            const rect = event.currentTarget.getBoundingClientRect();
+            const startX = rect.left + rect.width / 2;
+            const startY = rect.top + rect.height / 2;
+
+            // Target around center of screen
+            const targetX = window.innerWidth / 2 + (Math.random() * 160 - 80);
+            const targetY = window.innerHeight / 2 + (Math.random() * 160 - 80);
+
+            // Create Spit Liquid Splat Graphic & Text
+            const spit = document.createElement('div');
+            spit.className = 'spider-spit-splat';
+            spit.style.left = targetX + 'px';
+            spit.style.top = targetY + 'px';
+            spit.innerHTML = `
+                <div class="spit-text-effect">캬아아악 퉤-! 💦</div>
+                <svg width="130" height="130" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="20" fill="rgba(0, 243, 255, 0.6)" filter="drop-shadow(0 0 10px #00f3ff)"/>
+                    <circle cx="35" cy="40" r="8" fill="rgba(255, 0, 127, 0.7)"/>
+                    <circle cx="65" cy="55" r="12" fill="rgba(0, 243, 255, 0.8)"/>
+                    <path d="M45 25 C30 10, 20 40, 15 50 C10 60, 40 85, 55 75 C70 65, 85 45, 75 35 C65 25, 60 40, 45 25 Z" fill="rgba(0, 243, 255, 0.4)"/>
+                    <circle cx="48" cy="48" r="5" fill="#ffffff"/>
+                </svg>
+            `;
+            document.body.appendChild(spit);
+
+            if (navigator.vibrate) {
+                navigator.vibrate([20, 40, 20]);
+            }
+
+            setTimeout(() => spit.remove(), 2800);
+        }
+
+        /* OX Quiz Logic */
+        function checkAnswer(isO) {
+            const resultMsg = document.getElementById('quizResult');
+            const quizSection = resultMsg.parentElement;
+
+            if (isO) {
+                resultMsg.style.color = 'var(--neon-cyan)';
+                resultMsg.innerText = '🎉 정답입니다! 숩바이더맨의 키는 170cm가 넘습니다! 🥳';
+                
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#00f3ff', '#ff007f', '#ffe600', '#ffffff']
+                });
+            } else {
+                resultMsg.style.color = 'var(--neon-pink)';
+                resultMsg.innerText = '😅 아쉬워요! 숩바이더맨은 170cm보다 큽니다! 다시 도전해 보세요! 💥';
+                
+                quizSection.classList.remove('shake');
+                void quizSection.offsetWidth;
+                quizSection.classList.add('shake');
+            }
+        }
+
+        /* Fortune Generator Logic */
+        const fortunes = [
+            "🕷️ 오늘은 거미줄처럼 끈기 있게 임하면 모든 일이 착착 풀리는 날!",
+            "⚡ 영웅의 피가 끓어오르는 최고의 하루! 도전하고 싶었던 일을 시작해보세요.",
+            "🍳 맛있는 김치볶음밥을 먹으면 행운이 300% 상승할 예정입니다!",
+            "🎮 오늘 게임 연속 승리 각! 당신의 피지컬이 절정에 달하는 날입니다.",
+            "🎨 창의력이 뿜뿜 터지는 날! 낙서라도 한 장 그려보면 걸작이 탄생합니다.",
+            "✨ 생각지 못한 곳에서 귀인을 만나 거미줄처럼 끈끈한 우정을 맺게 됩니다.",
+            "🌃 밤거리의 네온사인처럼 당신의 존재감이 환하게 빛나는 하루가 될 거예요.",
+            "🦸 소소한 선행 하나가 누군가에겐 영웅의 구원처럼 느껴지는 날입니다.",
+            "🎯 목표했던 일을 한 방에 명중시킬 수 있는 어마어마한 집중력이 찾아옵니다!",
+            "🍕 맛있는 야식을 먹어도 칼로리가 0kcal처럼 느껴지는 행복한 날!",
+            "🌈 긍정의 에너지가 넘쳐흘러 주변 사람들에게 웃음을 전달해 줍니다.",
+            "☕ 따뜻한 음료 한 잔과 함께 느긋한 휴식을 취하면 대운이 따라옵니다."
+        ];
+
+        function generateFortune() {
+            const fortuneBox = document.getElementById('fortuneBox');
+            const fortuneText = document.getElementById('fortuneText');
+            const spiderContainer = document.getElementById('hangingSpiderContainer');
+
+            spiderContainer.classList.add('descend');
+
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            
+            setTimeout(() => {
+                fortuneText.innerText = fortunes[randomIndex];
+                fortuneBox.style.display = 'block';
+
+                setTimeout(() => {
+                    spiderContainer.classList.remove('descend');
+                }, 400);
+            }, 600);
+        }
+    </script>
+</body>
+</html>
