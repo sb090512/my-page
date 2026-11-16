@@ -2,7 +2,7 @@
 <html lang="ko"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>about</title>
+    <title>숩바이더맨의 네온 시티 🕷️✨</title>
     <!-- Google Fonts & Canvas Confetti Library -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&amp;family=Noto+Sans+KR:wght@400;700;900&amp;display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -1243,20 +1243,1719 @@ html.st-dark img,html.st-dark video,html.st-dark iframe,html.st-dark canvas{filt
 <body>
 <nav class="st-nav" data-studio="nav">
   <div class="st-nav-in">
-    <a class="st-nav-a" href="index.html">홈</a>
-    <a class="st-nav-a is-on" href="about.html">about</a>
+    <a class="st-nav-a is-on" href="index.html">홈</a>
+    <a class="st-nav-a" href="about.html">about</a>
     <a class="st-nav-a" href="diiesf.html">내 ㄲㅜㅁ</a>
   </div>
 </nav>
 
-<div class="container">
-  <h1 class="title">내가 좋아하는 것</h1>
-  <figure class="st-img">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4h_Z9QVGXw4cYi48LaE7E9uV8csMY-rM6I1YWono_Jg&amp;s" alt="뚱띠카와">
-  </figure>
-  <p class="subtitle">I like Chiikawa.<br>私はちいかわが好きです。<br>Szeretem a Chiikawát.<br>Би Чийкавад дуртай.<br>Ndimakonda Chiikawa.<br>我喜欢吉伊卡哇。<br>나는 치이카와를 좋아합니다</p>
-  <div class="st-sec st-embed" data-kind="youtube">
-<iframe src="https://www.youtube.com/embed/83axHJGJfMc" title="유튜브 동영상" loading="lazy" allowfullscreen=""></iframe>
-  </div>
-</div>
+
+    <!-- Cyber Background Grid -->
+    <div class="bg-grid"></div>
+
+    <!-- Wallet HUD -->
+
+    <!-- Ultimate Skill HUD Button -->
+    <button id="ultHudBtn" class="ult-hud" onclick="triggerUltimate()">
+        ⚡ 궁극기 준비완료! [Space]
+    </button>
+
+    <!-- Neon City Skyline Background -->
+    <div class="city-background"></div>
+    <svg class="city-svg-buildings" preserveAspectRatio="none" viewBox="0 0 1200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Building Silhouettes with Neon Highlights -->
+        <path d="M0 400V220H60V260H110V180H170V400H0Z" fill="#0c091f"></path>
+        <path d="M150 400V140H220V190H280V400H150Z" fill="#140d2e"></path>
+        <line x1="220" y1="140" x2="220" y2="400" stroke="#00f3ff" stroke-width="2" opacity="0.4"></line>
+        <path d="M260 400V250H320V210H390V400H260Z" fill="#0a081a"></path>
+        <path d="M380 400V100H450V160H510V400H380Z" fill="#170f36"></path>
+        <line x1="450" y1="100" x2="450" y2="400" stroke="#ff007f" stroke-width="2" opacity="0.5"></line>
+        <path d="M500 400V200H570V170H640V400H500Z" fill="#0d0a21"></path>
+        <path d="M630 400V120H710V400H630Z" fill="#150e33"></path>
+        <path d="M700 400V230H770V190H840V400H700Z" fill="#080614"></path>
+        <path d="M830 400V150H900V220H980V400H830Z" fill="#120c29"></path>
+        <line x1="900" y1="150" x2="900" y2="400" stroke="#00f3ff" stroke-width="2" opacity="0.4"></line>
+        <path d="M970 400V180H1050V240H1200V400H970Z" fill="#0b081c"></path>
+        <!-- Neon Window Dots -->
+        <circle cx="80" cy="200" r="2" fill="#ffe600" opacity="0.8"></circle>
+        <circle cx="90" cy="220" r="2" fill="#00f3ff" opacity="0.8"></circle>
+        <circle cx="180" cy="160" r="2" fill="#ff007f" opacity="0.8"></circle>
+        <circle cx="195" cy="180" r="2" fill="#ffe600" opacity="0.8"></circle>
+        <circle cx="410" cy="130" r="2.5" fill="#00f3ff" opacity="0.9"></circle>
+        <circle cx="430" cy="150" r="2.5" fill="#ff007f" opacity="0.9"></circle>
+        <circle cx="660" cy="150" r="2" fill="#ffe600" opacity="0.8"></circle>
+        <circle cx="680" cy="180" r="2" fill="#00f3ff" opacity="0.8"></circle>
+        <circle cx="860" cy="180" r="2.5" fill="#ff007f" opacity="0.9"></circle>
+    </svg>
+
+    <!-- Wall Crawling Spidey Interactive Canvas Element -->
+    <div class="spidey-container">
+        <svg id="spideySvgLayer" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+            <line id="webLine" class="spidey-web-line" x1="0" y1="0" x2="0" y2="0"></line>
+        </svg>
+        <div id="spideyChar" class="spidey-character">
+            <div id="heroSvgWrapper" style="width: 100%; height: 100%;">
+                <!-- Neon Styled Spider-Man Icon (Default) -->
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M32 4C18 4 10 16 10 32C10 48 20 60 32 60C44 60 54 48 54 32C54 16 46 4 32 4Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"></path>
+                    <path d="M14 26C18 24 26 26 28 36C20 38 15 34 14 26Z" fill="#ffffff" stroke="#000" stroke-width="2"></path>
+                    <path d="M50 26C46 24 38 26 36 36C44 38 49 34 50 26Z" fill="#ffffff" stroke="#000" stroke-width="2"></path>
+                    <path d="M32 4V60M10 32H54M16 16L48 48M48 16L16 48" stroke="rgba(0,0,0,0.3)" stroke-width="1.5"></path>
+                </svg>
+            </div>
+            <!-- Hint Tooltip Bubble -->
+            <div class="spidey-hint-bubble">👈 누르면 +1원! 꾹~ 연사! 🕸️</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        
+        <header>
+            <div class="hero-badge">WELCOME TO NEON CITY</div>
+            <h1 class="title">숩바이더맨 🕷️⚡</h1>
+            <p class="subtitle">도시의 밤을 누비는 숩바이더맨의 비밀 공간에 오신 것을 환영합니다!</p>
+        </header>
+
+        <!-- Section 1: Likes (Flip Cards) -->
+        <section>
+            <h2 class="section-title">💖내가 좋아하는 3가지 (클릭해 봐!)🤔</h2>
+            <div class="cards-grid">
+                
+                <!-- Card 1: Drawing -->
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-icon">🎨</div>
+                            <div class="card-name">그림 그리기</div>
+                            <div class="tap-hint">TAP TO FLIP ↺</div>
+                            <!-- Peeking Spider Head Icon SVG -->
+                            <div class="peeking-spider-head" onclick="spitVenom(event)">
+                                <div class="spider-spit-hint">💧 날 누르면 침 뱉음!</div>
+                                <svg viewBox="0 0 44 44" fill="none">
+                                    <path d="M7 26C7 15 14 8 22 8C30 8 37 15 37 26V38H7V26Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"></path>
+                                    <circle cx="16" cy="20" r="2.5" fill="#ffffff"></circle>
+                                    <circle cx="28" cy="20" r="2.5" fill="#ffffff"></circle>
+                                    <circle cx="16" cy="20" r="1" fill="#080711"></circle>
+                                    <circle cx="28" cy="20" r="1" fill="#080711"></circle>
+                                    <circle cx="12" cy="25" r="2" fill="#ffe600" opacity="0.6"></circle>
+                                    <circle cx="32" cy="25" r="2" fill="#ffe600" opacity="0.6"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="board-spider-presenter">
+                                <!-- Spider Teacher with Pointer Stick SVG -->
+                                <svg class="spider-teacher-svg" viewBox="0 0 48 48" fill="none">
+                                    <circle cx="20" cy="24" r="8" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"></circle>
+                                    <circle cx="20" cy="14" r="5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"></circle>
+                                    <circle cx="18" cy="13" r="1.2" fill="#fff"></circle>
+                                    <circle cx="22" cy="13" r="1.2" fill="#fff"></circle>
+                                    <!-- Legs -->
+                                    <path d="M15 22 L5 16 M15 24 L3 24 M15 26 L5 32" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <path d="M25 22 L32 18 M25 26 L32 30" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <!-- Pointer Stick arm pointing right towards blackboard -->
+                                    <path d="M24 24 L44 14" stroke="#ffe600" stroke-width="2.5" stroke-linecap="round"></path>
+                                    <circle cx="44" cy="14" r="2" fill="#ffe600"></circle>
+                                </svg>
+                                <div class="card-back-title">🎨 왜 좋아할까?</div>
+                            </div>
+                            <div class="blackboard-box">
+                                <div class="card-reason">
+                                    낙서로 시작했지만 정신 차려보면 거미줄 패턴을 1000번 그리고 있음! 마법의 붓 한 자루면 세상을 거미줄로 물들일 수 있답니다.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Gaming -->
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-icon">🎮</div>
+                            <div class="card-name">게임 하기</div>
+                            <div class="tap-hint">TAP TO FLIP ↺</div>
+                            <!-- Peeking Spider Head Icon SVG -->
+                            <div class="peeking-spider-head" onclick="spitVenom(event)">
+                                <div class="spider-spit-hint">💧 날 누르면 침 뱉음!</div>
+                                <svg viewBox="0 0 44 44" fill="none">
+                                    <path d="M7 26C7 15 14 8 22 8C30 8 37 15 37 26V38H7V26Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"></path>
+                                    <circle cx="16" cy="20" r="2.5" fill="#ffffff"></circle>
+                                    <circle cx="28" cy="20" r="2.5" fill="#ffffff"></circle>
+                                    <circle cx="16" cy="20" r="1" fill="#080711"></circle>
+                                    <circle cx="28" cy="20" r="1" fill="#080711"></circle>
+                                    <circle cx="12" cy="25" r="2" fill="#ffe600" opacity="0.6"></circle>
+                                    <circle cx="32" cy="25" r="2" fill="#ffe600" opacity="0.6"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="board-spider-presenter">
+                                <!-- Spider Teacher with Pointer Stick SVG -->
+                                <svg class="spider-teacher-svg" viewBox="0 0 48 48" fill="none">
+                                    <circle cx="20" cy="24" r="8" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"></circle>
+                                    <circle cx="20" cy="14" r="5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"></circle>
+                                    <circle cx="18" cy="13" r="1.2" fill="#fff"></circle>
+                                    <circle cx="22" cy="13" r="1.2" fill="#fff"></circle>
+                                    <!-- Legs -->
+                                    <path d="M15 22 L5 16 M15 24 L3 24 M15 26 L5 32" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <path d="M25 22 L32 18 M25 26 L32 30" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <!-- Pointer Stick arm pointing right towards blackboard -->
+                                    <path d="M24 24 L44 14" stroke="#ffe600" stroke-width="2.5" stroke-linecap="round"></path>
+                                    <circle cx="44" cy="14" r="2" fill="#ffe600"></circle>
+                                </svg>
+                                <div class="card-back-title">🎮 왜 좋아할까?</div>
+                            </div>
+                            <div class="blackboard-box">
+                                <div class="card-reason">
+                                    현실에선 빌딩 사이를 날아다닐 수 없으니, 게임 속에서 대신 날아다닙니다! 피지컬 1000% 가동해 랭크 올릴 때가 제일 짜릿해요.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Kimchi Fried Rice -->
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-icon">🍳</div>
+                            <div class="card-name">김치볶음밥</div>
+                            <div class="tap-hint">TAP TO FLIP ↺</div>
+                            <!-- Peeking Spider Head Icon SVG -->
+                            <div class="peeking-spider-head" onclick="spitVenom(event)">
+                                <div class="spider-spit-hint">💧 날 누르면 침 뱉음!</div>
+                                <svg viewBox="0 0 44 44" fill="none">
+                                    <path d="M7 26C7 15 14 8 22 8C30 8 37 15 37 26V38H7V26Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"></path>
+                                    <circle cx="16" cy="20" r="2.5" fill="#ffffff"></circle>
+                                    <circle cx="28" cy="20" r="2.5" fill="#ffffff"></circle>
+                                    <circle cx="16" cy="20" r="1" fill="#080711"></circle>
+                                    <circle cx="28" cy="20" r="1" fill="#080711"></circle>
+                                    <circle cx="12" cy="25" r="2" fill="#ffe600" opacity="0.6"></circle>
+                                    <circle cx="32" cy="25" r="2" fill="#ffe600" opacity="0.6"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="board-spider-presenter">
+                                <!-- Spider Teacher with Pointer Stick SVG -->
+                                <svg class="spider-teacher-svg" viewBox="0 0 48 48" fill="none">
+                                    <circle cx="20" cy="24" r="8" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"></circle>
+                                    <circle cx="20" cy="14" r="5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"></circle>
+                                    <circle cx="18" cy="13" r="1.2" fill="#fff"></circle>
+                                    <circle cx="22" cy="13" r="1.2" fill="#fff"></circle>
+                                    <!-- Legs -->
+                                    <path d="M15 22 L5 16 M15 24 L3 24 M15 26 L5 32" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <path d="M25 22 L32 18 M25 26 L32 30" stroke="#00f3ff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    <!-- Pointer Stick arm pointing right towards blackboard -->
+                                    <path d="M24 24 L44 14" stroke="#ffe600" stroke-width="2.5" stroke-linecap="round"></path>
+                                    <circle cx="44" cy="14" r="2" fill="#ffe600"></circle>
+                                </svg>
+                                <div class="card-back-title">🍳 왜 좋아할까?</div>
+                            </div>
+                            <div class="blackboard-box">
+                                <div class="card-reason">
+                                    지구를 구하려면 탄수화물 충전은 필수! 반숙 계란후라이 노른자를 터뜨려 쓱쓱 비벼 먹으면 거미줄 파워가 300% 상승합니다.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 2: OX Quiz -->
+        <section>
+            <h2 class="section-title"><span>❓</span> 숩바이더맨 OX 퀴즈</h2>
+            <div class="quiz-container">
+                <div class="quiz-question">"숩바이더맨의 키는 170cm가 넘을까?"</div>
+                <div class="quiz-buttons">
+                    <button class="quiz-btn btn-o" onclick="checkAnswer(true)">O</button>
+                    <button class="quiz-btn btn-x" onclick="checkAnswer(false)">X</button>
+                </div>
+                <div class="quiz-result-msg" id="quizResult"></div>
+            </div>
+        </section>
+
+        <!-- Section 3: Daily Fortune Generator -->
+        <section>
+            <h2 class="section-title"><span>🔮</span> 오늘의 네온 운세 뽑기</h2>
+            <div class="fortune-container">
+                <!-- Hanging Spider Animation Elements -->
+                <div id="hangingSpiderContainer" class="hanging-spider-container">
+                    <div class="hanging-web-string"></div>
+                    <div class="hanging-spider-body">
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <circle cx="16" cy="16" r="7" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"></circle>
+                            <circle cx="16" cy="8" r="5" fill="#ff007f" stroke="#00f3ff" stroke-width="1.5"></circle>
+                            <!-- Glowing Eyes -->
+                            <circle cx="14" cy="7" r="1.5" fill="#ffffff"></circle>
+                            <circle cx="18" cy="7" r="1.5" fill="#ffffff"></circle>
+                            <!-- Spider Legs -->
+                            <path d="M11 14 L3 7 M11 17 L1 17 M11 20 L3 26 M11 22 L5 31" stroke="#00f3ff" stroke-width="2" stroke-linecap="round"></path>
+                            <path d="M21 14 L29 7 M21 17 L31 17 M21 20 L29 26 M21 22 L27 31" stroke="#00f3ff" stroke-width="2" stroke-linecap="round"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <button class="fortune-btn" onclick="generateFortune()">
+                    <span>🕸️ 운세 거미줄 당기기 🕸️</span>
+                </button>
+                <div class="fortune-box" id="fortuneBox">
+                    <div class="fortune-title">★ TODAY'S FORTUNE ★</div>
+                    <div class="fortune-text" id="fortuneText"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Hero Shop & Skin Locker -->
+        <section>
+            <span class="wallet-amount" id="coinDisplay">0원</span>
+            <h2 class="section-title"><span>🛒</span> 네온 히어로 상점 &amp; 스킨 보관함</h2>
+            <p style="text-align: center; color: #d0cbe5; font-size: 0.9rem; margin-bottom: 20px;">
+                벽을 타는 히어로를 클릭해 <b>1원씩</b> 모아서 새로운 히어로 스킨을 해금하세요!
+            </p>
+            <div class="shop-skin-grid">
+                <!-- Spider-Man Skin Card -->
+                <div class="skin-card equipped" id="card-spidey">
+                    <div class="skin-preview">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <path d="M32 4C18 4 10 16 10 32C10 48 20 60 32 60C44 60 54 48 54 32C54 16 46 4 32 4Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"></path>
+                            <path d="M14 26C18 24 26 26 28 36C20 38 15 34 14 26Z" fill="#ffffff" stroke="#000" stroke-width="2"></path>
+                            <path d="M50 26C46 24 38 26 36 36C44 38 49 34 50 26Z" fill="#ffffff" stroke="#000" stroke-width="2"></path>
+                            <path d="M32 4V60M10 32H54M16 16L48 48M48 16L16 48" stroke="rgba(0,0,0,0.3)" stroke-width="1.5"></path>
+                        </svg>
+                    </div>
+                    <div class="skin-title">🕷️ 숩바이더맨 (기본)</div>
+                    <div class="skin-desc">벽을 타고 날아다니며 화려한 네온 거미줄과 새끼 거미를 발사합니다.</div>
+                    <button class="skin-action-btn btn-equipped" id="btn-spidey" onclick="equipSkin('spidey')">✅ 장착 중</button>
+                </div>
+
+                <!-- Iron Man Skin Card -->
+                <div class="skin-card" id="card-ironman">
+                    <div class="skin-preview" style="filter: drop-shadow(0 0 10px #ffe600);">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <!-- Helmet Red Outer -->
+                            <path d="M32 4C19 4 12 14 12 30C12 46 20 58 32 60C44 58 52 46 52 30C52 14 45 4 32 4Z" fill="#e60026" stroke="#ffe600" stroke-width="2"></path>
+                            <!-- Gold Faceplate -->
+                            <path d="M20 16L26 22H38L44 16L46 34L39 50H25L18 34L20 16Z" fill="#ffd700" stroke="#990000" stroke-width="1.5"></path>
+                            <!-- Glowing Cyan Eyes -->
+                            <polygon points="20,28 29,30 28,33 19,31" fill="#00f3ff"></polygon>
+                            <polygon points="44,28 35,30 36,33 45,31" fill="#00f3ff"></polygon>
+                            <!-- Mouth Slit -->
+                            <line x1="26" y1="43" x2="38" y2="43" stroke="#990000" stroke-width="2"></line>
+                        </svg>
+                    </div>
+                    <div class="skin-title">🤖 아이언맨 (마크 85)</div>
+                    <div class="skin-desc">클릭 시 <b>+2원</b> 획득! 강렬한 <b>리펄서 레이저 빔</b>을 쏩니다!</div>
+                    <button class="skin-action-btn btn-buy" id="btn-ironman" onclick="handleSkinAction('ironman', 15)">🪙 15원 구매하기</button>
+                </div>
+
+                <!-- Thor Skin Card -->
+                <div class="skin-card" id="card-thor">
+                    <div class="skin-preview" style="filter: drop-shadow(0 0 12px var(--neon-cyan));">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <!-- Winged Helmet -->
+                            <path d="M18 28C18 16 24 10 32 10C40 10 46 16 46 28V36H18V28Z" fill="#94a3b8" stroke="#00f3ff" stroke-width="2"></path>
+                            <!-- Helmet Wings -->
+                            <path d="M18 22L6 10L12 26L18 28Z" fill="#e2e8f0" stroke="#00f3ff" stroke-width="1.5"></path>
+                            <path d="M46 22L58 10L52 26L46 28Z" fill="#e2e8f0" stroke="#00f3ff" stroke-width="1.5"></path>
+                            <!-- Face & Glowing Lightning Eyes -->
+                            <path d="M22 30H42V46C42 52 37 56 32 56C27 56 22 52 22 46V30Z" fill="#fde68a"></path>
+                            <circle cx="27" cy="36" r="2.5" fill="#00f3ff" filter="drop-shadow(0 0 4px #00f3ff)"></circle>
+                            <circle cx="37" cy="36" r="2.5" fill="#00f3ff" filter="drop-shadow(0 0 4px #00f3ff)"></circle>
+                            <!-- Beard -->
+                            <path d="M22 42C22 52 27 57 32 57C37 57 42 52 42 42C38 45 26 45 22 42Z" fill="#d97706"></path>
+                        </svg>
+                    </div>
+                    <div class="skin-title">⚡ 토르 (천둥의 신)</div>
+                    <div class="skin-desc">클릭 시 <b>+3원</b> 획득! 회전하는 <b>묠니르 망치</b>와 번개를 던집니다!</div>
+                    <button class="skin-action-btn btn-buy" id="btn-thor" onclick="handleSkinAction('thor', 30)">🪙 30원 구매하기</button>
+                </div>
+
+                <!-- Hulk Skin Card -->
+                <div class="skin-card" id="card-hulk">
+                    <div class="skin-preview" style="filter: drop-shadow(0 0 12px #39ff14);">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <!-- Hulk Face -->
+                            <rect x="14" y="14" width="36" height="42" rx="10" fill="#22c55e" stroke="#39ff14" stroke-width="2.5"></rect>
+                            <!-- Messy Dark Hair -->
+                            <path d="M12 22C12 10 20 6 32 6C44 6 52 10 52 22L46 18L40 22L32 16L24 22L18 18L12 22Z" fill="#0f172a"></path>
+                            <!-- Angry Eyebrows -->
+                            <path d="M18 27L28 31M46 27L36 31" stroke="#052e16" stroke-width="3" stroke-linecap="round"></path>
+                            <!-- Glowing Green Eyes -->
+                            <circle cx="24" cy="32" r="2.5" fill="#ffffff"></circle>
+                            <circle cx="40" cy="32" r="2.5" fill="#ffffff"></circle>
+                            <!-- Roaring Mouth -->
+                            <rect x="22" y="42" width="20" height="8" rx="2" fill="#052e16" stroke="#39ff14" stroke-width="1"></rect>
+                            <line x1="22" y1="46" x2="42" y2="46" stroke="#ffffff" stroke-width="2" stroke-dasharray="3 2"></line>
+                        </svg>
+                    </div>
+                    <div class="skin-title">💚 헐크 (분노의 괴물)</div>
+                    <div class="skin-desc">클릭 시 <b>+5원</b> 획득! <b>"꺄아~!" 소리 지르는 사람</b>을 집어 던집니다!</div>
+                    <button class="skin-action-btn btn-buy" id="btn-hulk" onclick="handleSkinAction('hulk', 550)">🪙 550원 구매하기</button>
+                </div>
+            </div>
+            <div class="shop-toast" id="shopToast"></div>
+        </section>
+
+        <!-- Section 5: Neon Spider Dungeon -->
+        <section>
+            <h2 class="section-title"><span>⚔️</span> 네온 거미 소굴 던전</h2>
+            <p style="text-align: center; color: #d0cbe5; font-size: 0.9rem; margin-bottom: 20px;">
+                사방에서 몰려오는 네온 몬스터 거미들을 장착 중인 히어로의 무기로 처치하고 보상을 획득하세요!
+            </p>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <button id="dungeonToggleBtn" class="fortune-btn" style="padding: 14px 30px; font-size: 1.1rem;" onclick="toggleDungeon()">
+                    🚪 던전 입장하기
+                </button>
+            </div>
+            <div id="dungeonArena" class="dungeon-arena" onmousedown="arenaAttack(event)" ontouchstart="arenaAttack(event)">
+                <div class="dungeon-hud">
+                    <span style="color: var(--neon-cyan);">👾 처치 수: <span id="dungeonKills">0</span>마리</span>
+                    <span style="color: var(--neon-yellow);">🛡️ 웨이브: <span id="dungeonWave">1</span></span>
+                    <span style="color: var(--neon-pink);">❤️ 체력: <span id="dungeonHp">100</span>%</span>
+                </div>
+                <svg id="dungeonSvgOverlay" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:14;"></svg>
+                <div id="dungeonHeroCenter" class="dungeon-hero-center"></div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <!-- ▼ 방명록·OX 투표 (4차시) ▼ --><sb-widget id="sb-web" style="display:block;width:100%;max-width:640px;margin:32px auto;flex:1 1 100%;grid-column:1/-1;align-self:stretch;box-sizing:border-box"></sb-widget><script>
+(function () {
+  var C = {"id":"sb-web","url":"https://script.google.com/macros/s/AKfycbx-dsGQ4cfpNxBSXYFJet8nmoIYX9ieD5PU2MQSCVyjkv3iaLKUPx1hFPufqwF-Jdy9/exec","q":"스파이더맨이 쏘는 거미줄의 거미의 색은 빨강이다.","title":"@.@","sel":"","pos":"before"};
+  var host = document.getElementById(C.id);
+  if (!host || host.sbReady) return;
+  host.sbReady = true;
+  var PREVIEW = !!window.__SB_PREVIEW;
+
+  function place() {
+    if (!C.sel) return;
+    var t = null;
+    try { t = document.querySelector(C.sel); } catch (e) {}
+    if (!t || t === host || t.contains(host) || !t.parentNode) return;
+    if (C.pos === 'before') { if (t.previousElementSibling !== host) t.parentNode.insertBefore(host, t); }
+    else if (t.nextElementSibling !== host) t.parentNode.insertBefore(host, t.nextSibling);
+  }
+
+  function rgb(s) { var m = (s || '').match(/[\d.]+/g); return m ? m.map(Number) : null; }
+  function lum(c) { return (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255; }
+  function pageBg() {
+    var el = host.parentElement;
+    while (el) { var c = rgb(getComputedStyle(el).backgroundColor); if (c && (c.length < 4 || c[3] > 0.5)) return c; el = el.parentElement; }
+    return [255, 255, 255];
+  }
+  function accent() {
+    var els = document.querySelectorAll('button, .btn, a, h1, h2');
+    for (var i = 0; i < els.length && i < 60; i++) {
+      if (host.contains(els[i])) continue;
+      var cs = getComputedStyle(els[i]);
+      var list = [cs.backgroundColor, cs.color];
+      for (var j = 0; j < 2; j++) {
+        var c = rgb(list[j]);
+        if (!c || (c.length > 3 && c[3] < 0.5)) continue;
+        var mx = Math.max(c[0], c[1], c[2]), mn = Math.min(c[0], c[1], c[2]);
+        if (mx - mn > 60 && lum(c) > 0.2 && lum(c) < 0.8) return 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')';
+      }
+    }
+    return '#E5486F';
+  }
+
+  var root = host.attachShadow ? host.attachShadow({ mode: 'open' }) : host;
+  root.innerHTML = '<' + 'style>' +
+    '.wrap{display:flex;flex-direction:column;gap:16px}' +
+    '.card{box-sizing:border-box;font-family:inherit;font-size:16px;line-height:1.6;text-align:left;border-radius:16px;padding:20px;background:rgba(255,255,255,.94);color:#222;border:1px solid rgba(0,0,0,.1);box-shadow:0 4px 18px rgba(0,0,0,.08)}' +
+    '.dark .card{background:rgba(20,20,28,.9);color:#f3f3f6;border-color:rgba(255,255,255,.18)}' +
+    '.card *{box-sizing:border-box;font-family:inherit}' +
+    'h3{margin:0 0 12px;font-size:20px;line-height:1.35;color:inherit}' +
+    '.row{display:flex;gap:8px;flex-wrap:wrap}' +
+    'input,textarea{flex:1 1 140px;min-width:0;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid #ccc;background:#fff;color:inherit}' +
+    '.dark input,.dark textarea{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}' +
+    'textarea{flex-basis:100%;resize:vertical;min-height:70px}' +
+    'button{font-size:16px;font-weight:700;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;background:var(--a,#E5486F);color:#fff}' +
+    'button:disabled{opacity:.45;cursor:default}' +
+    '.msg{margin:8px 0 0;font-size:14px;min-height:1em;opacity:.85}' +
+    '.list{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;max-height:340px;overflow:auto}' +
+    '.list li{padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.04);word-break:break-all}.dark .list li{background:rgba(255,255,255,.07)}' +
+    '.list b{margin-right:6px}.list small{opacity:.6;font-size:12px}.list p{margin:2px 0 0;white-space:pre-wrap}' +
+    '.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px;font-size:14px;opacity:.85}' +
+    '.top .re{background:transparent;color:inherit;border:1px solid currentColor;padding:4px 10px;font-size:13px;font-weight:400;opacity:.8}' +
+    '.live{display:inline-flex;align-items:center;gap:6px}.live:before{content:"";width:8px;height:8px;border-radius:50%;background:#1BA672;box-shadow:0 0 0 0 rgba(27,166,114,.6);animation:pulse 1.6s infinite}' +
+    '@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(27,166,114,0)}100%{box-shadow:0 0 0 0 rgba(27,166,114,0)}}' +
+    '.ox{display:flex;gap:10px}.ox button{flex:1;font-size:28px;padding:10px 0;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}' +
+    '.ox .o{background:linear-gradient(#ff7fa3,#e5486f)}.ox .x{background:linear-gradient(#7d9bff,#4a6cf7)}' +
+    '.mine{outline:3px solid #222;outline-offset:2px}.dark .mine{outline-color:#fff}' +
+    '.legend{display:flex;justify-content:space-between;font-size:15px;font-weight:700;margin-top:14px}' +
+    '.legend .lo{color:#e5486f}.legend .lx{color:#4a6cf7}' +
+    '.tube{position:relative;margin-top:6px;height:64px}' +
+    '.tube canvas{display:block;width:100%;height:64px}' +
+    '.tilt{margin:8px 0 0;font-weight:700;text-align:center;min-height:1.6em}' +
+    '</' + 'style><div class="wrap"><div class="card oxc"></div><div class="card gbc"></div></div>';
+  var wrap = root.querySelector('.wrap');
+  function theme() {
+    try { wrap.classList.toggle('dark', lum(pageBg()) < 0.4); wrap.style.setProperty('--a', accent()); } catch (e) {}
+  }
+
+  function flagKey(k) { return 'sb-done:' + k + ':' + C.url; }
+  var mem = {};
+  function getFlag(k) { if (PREVIEW) return mem[k]; try { return localStorage.getItem(flagKey(k)); } catch (e) { return mem[k]; } }
+  function setFlag(k, v) { mem[k] = v; if (PREVIEW) return; try { localStorage.setItem(flagKey(k), v); } catch (e) {} }
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function time(v) {
+    var d = new Date(v); if (isNaN(d)) return '';
+    function p(n) { return (n < 10 ? '0' : '') + n; }
+    return (d.getMonth() + 1) + '월 ' + d.getDate() + '일 ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+  function norm(list) {
+    if (!Array.isArray(list)) throw new Error('bad');
+    return list.map(function (r) { var o = {}; for (var k in r) o[String(k).trim()] = r[k]; return o; });
+  }
+  var demo = { O: 6, X: 3, '방명록': [{ '시간': new Date().toISOString(), '닉네임': '예시 방문자', '내용': '미리보기용 예시 글이에요. 실제 페이지에서는 방문자가 남긴 글이 보여요.' }] };
+  function api(q) { return C.url + (C.url.indexOf('?') < 0 ? '?' : '&') + q; }
+  function load(sheet) {
+    if (PREVIEW) return Promise.resolve(demo[sheet].slice());
+    return fetch(api('sheet=' + encodeURIComponent(sheet))).then(function (r) { return r.json(); }).then(norm);
+  }
+  function loadCount() {
+    if (PREVIEW) return Promise.resolve({ O: demo.O, X: demo.X });
+    return fetch(api('count=OX')).then(function (r) { return r.json(); }).then(function (c) {
+      if (!c || typeof c.O !== 'number') throw new Error('bad'); return c;
+    });
+  }
+  // 저장 요청: 서버가 바쁘면 잠시 기다렸다가 최대 3번까지 다시 보내기
+  function send(data, tries) {
+    if (PREVIEW) return Promise.reject(new Error('preview'));
+    tries = tries || 0;
+    return fetch(C.url, { method: 'POST', body: JSON.stringify(data) }).then(function (r) { return r.text(); }).then(function (t) {
+      if (t.indexOf('"ok"') < 0) throw new Error('busy'); return t;
+    }).catch(function (e) {
+      if (tries >= 3) throw e;
+      return new Promise(function (ok) { setTimeout(ok, 1500 * (tries + 1) + Math.random() * 1500); }).then(function () { return send(data, tries + 1); });
+    });
+  }
+  // 주기적으로 다시 불러오기: 실패하면 간격을 늘리고, 탭이 안 보이면 쉬기
+  function poll(fn, base) {
+    var fails = 0;
+    function next() { setTimeout(tick, base * Math.min(5, 1 + fails) + Math.random() * 2000); }
+    function tick() {
+      if (document.hidden) { next(); return; }
+      Promise.resolve(fn()).then(function (ok) { fails = ok === false ? fails + 1 : 0; next(); }, function () { fails++; next(); });
+    }
+    next();
+  }
+  function slow(m) { setTimeout(function () { if (m.textContent === '저장 중…') m.textContent = '저장 중… 지금 참여하는 사람이 많아서 조금 걸려요. 창을 닫지 말고 기다려 주세요.'; }, 4000); }
+  function failText(e) {
+    return e && e.message === 'preview' ? '미리보기에서는 저장되지 않아요. GitHub에 올린 뒤 시험해요.' : '서버와 연결하지 못했어요. 잠시 뒤 다시 눌러 보세요.';
+  }
+
+  function placeAndTheme() { place(); theme(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', placeAndTheme); else placeAndTheme();
+  window.addEventListener('load', function () { placeAndTheme(); setTimeout(placeAndTheme, 500); });
+
+  buildOX(root.querySelector('.oxc'));
+  buildGB(root.querySelector('.gbc'));
+
+  // ---------- OX 투표: 액체 게이지 ----------
+  function buildOX(card) {
+    card.appendChild(el('h3', '', 'Q. ' + (C.q || '')));
+    var box = el('div', 'ox'); var bo = el('button', 'o', 'O'); var bx = el('button', 'x', 'X');
+    box.appendChild(bo); box.appendChild(bx);
+    var msg = el('p', 'msg');
+    var lg = el('div', 'legend'); var lo = el('span', 'lo', 'O 0명'); var lx = el('span', 'lx', 'X 0명'); lg.appendChild(lo); lg.appendChild(lx);
+    var tube = el('div', 'tube'); var cv = el('canvas'); tube.appendChild(cv);
+    var tilt = el('p', 'tilt');
+    var top = el('div', 'top'); var count = el('span', 'live', '불러오는 중…'); var re = el('button', 're', '↻ 새로고침');
+    top.appendChild(count); top.appendChild(re);
+    [box, msg, lg, tube, tilt, top].forEach(function (x) { card.appendChild(x); });
+
+    var o = 0, x = 0, target = 0.5, pos = 0.5, vel = 0, t0 = 0, running = false, seen = true;
+    var bubbles = [];
+    for (var i = 0; i < 14; i++) bubbles.push({ s: i % 2, x: Math.random(), y: Math.random(), r: 1 + Math.random() * 2.2, v: 0.15 + Math.random() * 0.35 });
+    var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function mark() {
+      var f = getFlag('OX'); if (!f) return;
+      bo.disabled = bx.disabled = true;
+      (f === 'O' ? bo : bx).classList.add('mine');
+      msg.textContent = '내 선택: ' + f + ' · 참여해 줘서 고마워요!';
+    }
+    mark();
+    function setCounts(no, nx) {
+      o = no; x = nx;
+      var n = o + x;
+      target = n ? o / n : 0.5;
+      lo.textContent = 'O ' + o + '명'; lx.textContent = 'X ' + x + '명';
+      count.textContent = n ? '실시간 · 총 ' + n + '명 참여' : '실시간 · 아직 아무도 투표하지 않았어요';
+      tilt.textContent = !n ? '첫 번째로 눌러 보세요!' : o > x ? 'O 쪽으로 기울었어요' : o < x ? 'X 쪽으로 기울었어요' : '팽팽해요!';
+      kick();
+    }
+    function show(c) {
+      if (c.O !== o || c.X !== x || count.textContent.indexOf('불러오는') === 0) setCounts(c.O, c.X);
+    }
+    var busy = false;
+    function refresh() {
+      if (busy) return true; busy = true;
+      return loadCount().then(function (c) { busy = false; show(c); return true; }, function () { busy = false; if (!(o + x)) count.textContent = '결과를 불러오지 못했어요. 잠시 뒤 다시 시도해요.'; return false; });
+    }
+    re.addEventListener('click', refresh);
+    function vote(v) {
+      if (getFlag('OX')) return;
+      bo.disabled = bx.disabled = true; msg.textContent = '저장 중…'; slow(msg);
+      if (PREVIEW) { msg.textContent = failText(new Error('preview')); bo.disabled = bx.disabled = false; return; }
+      send({ sheet: 'OX', '답': v }).then(function () { setFlag('OX', v); mark(); setCounts(o + (v === 'O' ? 1 : 0), x + (v === 'X' ? 1 : 0)); setTimeout(refresh, 1500); },
+        function (e) { msg.textContent = failText(e); bo.disabled = bx.disabled = false; });
+    }
+    bo.addEventListener('click', function () { vote('O'); });
+    bx.addEventListener('click', function () { vote('X'); });
+
+    // 그리기
+    var ctx = cv.getContext && cv.getContext('2d');
+    function size() {
+      var w = cv.clientWidth || 300, h = 64, d = window.devicePixelRatio || 1;
+      if (cv.width !== Math.round(w * d)) { cv.width = Math.round(w * d); cv.height = Math.round(h * d); }
+      return { w: w, h: h, d: d };
+    }
+    function capsule(c, x0, y0, w, h) {
+      var r = h / 2;
+      c.beginPath(); c.moveTo(x0 + r, y0); c.lineTo(x0 + w - r, y0); c.arc(x0 + w - r, y0 + r, r, -Math.PI / 2, Math.PI / 2);
+      c.lineTo(x0 + r, y0 + h); c.arc(x0 + r, y0 + r, r, Math.PI / 2, Math.PI * 1.5); c.closePath();
+    }
+    function liquid(c, x0, y0, w, h, edge, left, cols) {
+      var g = c.createLinearGradient(0, y0, 0, y0 + h);
+      g.addColorStop(0, cols[0]); g.addColorStop(0.45, cols[1]); g.addColorStop(1, cols[2]);
+      c.beginPath();
+      var steps = 24, k;
+      if (left) { c.moveTo(x0 - 2, y0 - 2); for (k = 0; k <= steps; k++) c.lineTo(edge(y0 + h * k / steps), y0 + h * k / steps); c.lineTo(x0 - 2, y0 + h + 2); }
+      else { c.moveTo(x0 + w + 2, y0 - 2); for (k = 0; k <= steps; k++) c.lineTo(edge(y0 + h * k / steps), y0 + h * k / steps); c.lineTo(x0 + w + 2, y0 + h + 2); }
+      c.closePath(); c.fillStyle = g; c.fill();
+    }
+    function frame(ts) {
+      if (!ctx) return;
+      if (!t0) t0 = ts;
+      var t = (ts - t0) / 1000;
+      vel += (target - pos) * 0.018; vel *= 0.9; pos += vel;
+      var S = size(), w = S.w, h = S.h, c = ctx;
+      c.setTransform(S.d, 0, 0, S.d, 0, 0); c.clearRect(0, 0, w, h);
+      var pad = 3, X0 = pad, Y0 = pad, W = w - pad * 2, H = h - pad * 2;
+      // 유리관 그림자
+      c.save(); capsule(c, X0, Y0 + 2, W, H); c.fillStyle = 'rgba(0,0,0,.10)'; c.fill(); c.restore();
+      c.save(); capsule(c, X0, Y0, W, H); c.clip();
+      c.fillStyle = '#e9e9f1'; c.fillRect(X0, Y0, W, H);
+      var amp = calm ? 1 : 4.5 + Math.min(12, Math.abs(vel) * 1000);
+      var lean = Math.max(-18, Math.min(18, vel * 2600));
+      var bx0 = X0 + W * pos;
+      function edge(y) {
+        var u = (y - Y0) / H;
+        return bx0 + Math.sin(u * 6.2 + t * 3.1) * amp * 0.6 + Math.sin(u * 11 - t * 4.7) * amp * 0.4 + (u - 0.5) * lean;
+      }
+      liquid(c, X0, Y0, W, H, edge, true, ['#ff9dbb', '#e5486f', '#a3224a']);
+      liquid(c, X0, Y0, W, H, edge, false, ['#9fb5ff', '#4a6cf7', '#2a3fb0']);
+      // 앞쪽 물결(반투명): 겹쳐 흐르는 입체감
+      function edge2(y) { var u = (y - Y0) / H; return edge(y) + Math.sin(u * 4 - t * 2.3) * (calm ? 1 : 7); }
+      c.globalAlpha = 0.35;
+      liquid(c, X0, Y0, W, H, edge2, true, ['#ffc2d4', '#f06b90', '#c23a62']);
+      liquid(c, X0, Y0, W, H, edge2, false, ['#c6d3ff', '#6f8bff', '#3b52c9']);
+      c.globalAlpha = 1;
+      // 경계 거품
+      c.beginPath(); for (var k = 0; k <= 24; k++) { var yy = Y0 + H * k / 24; if (k) c.lineTo(edge(yy), yy); else c.moveTo(edge(yy), yy); }
+      c.strokeStyle = 'rgba(255,255,255,.75)'; c.lineWidth = 2.5; c.stroke();
+      // 거품 방울
+      bubbles.forEach(function (b) {
+        if (!calm) { b.y -= b.v * 0.012; if (b.y < -0.1) { b.y = 1.1; b.x = Math.random(); } }
+        var bx = b.s ? X0 + W * pos + (W * (1 - pos)) * b.x : X0 + W * pos * b.x;
+        var by = Y0 + H * b.y + Math.sin(t * 2 + b.x * 9) * 1.5;
+        if (Math.abs(bx - edge(by)) < 6) return;
+        c.beginPath(); c.arc(bx, by, b.r, 0, Math.PI * 2); c.fillStyle = 'rgba(255,255,255,.45)'; c.fill();
+      });
+      // 유리 입체감: 위쪽 반사광, 아래쪽 그림자
+      var gl = c.createLinearGradient(0, Y0, 0, Y0 + H);
+      gl.addColorStop(0, 'rgba(255,255,255,.55)'); gl.addColorStop(0.28, 'rgba(255,255,255,.08)'); gl.addColorStop(0.62, 'rgba(255,255,255,0)'); gl.addColorStop(1, 'rgba(0,0,0,.22)');
+      c.fillStyle = gl; c.fillRect(X0, Y0, W, H);
+      c.beginPath(); c.moveTo(X0 + H * 0.5, Y0 + H * 0.2); c.lineTo(X0 + W - H * 0.5, Y0 + H * 0.2);
+      c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 3; c.lineCap = 'round'; c.stroke();
+      // 가운데 기준선
+      c.beginPath(); c.setLineDash([3, 4]); c.moveTo(X0 + W / 2, Y0 + 4); c.lineTo(X0 + W / 2, Y0 + H - 4);
+      c.strokeStyle = 'rgba(255,255,255,.7)'; c.lineWidth = 1.5; c.stroke(); c.setLineDash([]);
+      // 글자
+      var n = o + x, po = n ? Math.round(o / n * 100) : 50;
+      c.font = '700 16px system-ui, sans-serif'; c.textBaseline = 'middle'; c.fillStyle = '#fff';
+      c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 3;
+      if (W * pos > 70) { c.textAlign = 'left'; c.fillText('O ' + (n ? po + '%' : ''), X0 + 18, Y0 + H / 2); }
+      if (W * (1 - pos) > 70) { c.textAlign = 'right'; c.fillText((n ? 100 - po + '% ' : '') + 'X', X0 + W - 18, Y0 + H / 2); }
+      c.shadowBlur = 0;
+      c.restore();
+      c.save(); capsule(c, X0, Y0, W, H); c.strokeStyle = 'rgba(0,0,0,.15)'; c.lineWidth = 1; c.stroke(); c.restore();
+      var still = Math.abs(target - pos) < 0.0005 && Math.abs(vel) < 0.00005;
+      if (seen && (!calm || !still)) requestAnimationFrame(frame); else running = false;
+    }
+    function kick() { if (!running && ctx) { running = true; requestAnimationFrame(frame); } }
+    if (window.IntersectionObserver) new IntersectionObserver(function (en) { seen = en[0].isIntersecting; if (seen) kick(); }).observe(tube);
+    window.addEventListener('resize', kick);
+    kick();
+    refresh();
+    // 실시간: 화면에 보이는 동안 몇 초마다 개수를 다시 불러오기(폴링)
+    poll(function () {
+      if (!seen) return true;
+      if (PREVIEW) { if (Math.random() < 0.5) demo.O++; else demo.X++; }
+      return refresh();
+    }, PREVIEW ? 2500 : 6000);
+  }
+
+  // ---------- 방명록 ----------
+  function buildGB(card) {
+    card.appendChild(el('h3', '', C.title || '방명록'));
+    var form = el('div', 'row');
+    var nick = el('input'); nick.placeholder = '닉네임 (10자까지)'; nick.maxLength = 10;
+    var text = el('textarea'); text.placeholder = '남기고 싶은 말 (100자까지)'; text.maxLength = 100;
+    var btn = el('button', '', '남기기');
+    form.appendChild(nick); form.appendChild(text); form.appendChild(btn);
+    var msg = el('p', 'msg');
+    var top = el('div', 'top'); var count = el('span', '', '불러오는 중…'); var re = el('button', 're', '↻ 새로고침');
+    top.appendChild(count); top.appendChild(re);
+    var ul = el('ul', 'list');
+    [form, msg, top, ul].forEach(function (x) { card.appendChild(x); });
+    function lock() { form.style.display = 'none'; msg.textContent = '방명록을 남겼어요. 고마워요!'; }
+    if (getFlag('GB')) lock();
+    var last = -1;
+    function show(list) {
+      var key = list.length + '|' + JSON.stringify(list[list.length - 1] || '');
+      if (key === last) return; last = key;
+      ul.innerHTML = '';
+      count.textContent = list.length >= 50 ? '최근 방명록 50개' : '방명록 ' + list.length + '개';
+      list.slice().reverse().forEach(function (r) {
+        var li = el('li'); li.appendChild(el('b', '', r['닉네임'] || '익명')); li.appendChild(el('small', '', time(r['시간'])));
+        li.appendChild(el('p', '', r['내용'] || '')); ul.appendChild(li);
+      });
+    }
+    function refresh(force) { if (force) last = -1; return load('방명록').then(function (l) { show(l); return true; }, function () { if (last === -1) count.textContent = '목록을 불러오지 못했어요. 잠시 뒤 다시 시도해요.'; return false; }); }
+    re.addEventListener('click', function () { count.textContent = '불러오는 중…'; refresh(true); });
+    btn.addEventListener('click', function () {
+      var n = nick.value.trim(), t = text.value.trim();
+      if (!n || !t) { msg.textContent = '닉네임과 내용을 모두 써 주세요.'; return; }
+      btn.disabled = true; msg.textContent = '저장 중…'; slow(msg);
+      send({ sheet: '방명록', '닉네임': n, '내용': t }).then(function () { setFlag('GB', '1'); lock(); refresh(true); }, function (e) { msg.textContent = failText(e); btn.disabled = false; });
+    });
+    refresh(true);
+    if (!PREVIEW) poll(function () { return refresh(); }, 20000);
+  }
+})();
+
+</script><!-- ▲ 방명록·OX 투표 끝 ▲ --><footer>
+            <p>© 2026 SOOBIDER-MAN. All rights reserved in Neon City.</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        /* Sound Effect Helper: Screaming Voice Synth */
+        function playScreamSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sawtooth';
+                const now = ctx.currentTime;
+                // High-pitched "Kyaaaa~!" sliding frequency
+                osc.frequency.setValueAtTime(680 + Math.random() * 140, now);
+                osc.frequency.exponentialRampToValueAtTime(980, now + 0.14);
+                osc.frequency.exponentialRampToValueAtTime(420, now + 0.52);
+
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.52);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.53);
+            } catch (e) {
+                // Ignore audio block if browser prevents autoplay
+            }
+        }
+
+        /* Game State: Coins & Skins */
+        let coins = 0;
+        let currentSkin = 'spidey'; // 'spidey', 'ironman', 'thor', 'hulk'
+        let unlockedSkins = {
+            spidey: true,
+            ironman: false,
+            thor: false,
+            hulk: false
+        };
+
+        const SKIN_REWARDS = {
+            spidey: 1,
+            ironman: 2,
+            thor: 3,
+            hulk: 5
+        };
+
+        const SKIN_SVGS = {
+            spidey: `
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M32 4C18 4 10 16 10 32C10 48 20 60 32 60C44 60 54 48 54 32C54 16 46 4 32 4Z" fill="#ff007f" stroke="#00f3ff" stroke-width="2"/>
+                    <path d="M14 26C18 24 26 26 28 36C20 38 15 34 14 26Z" fill="#ffffff" stroke="#000" stroke-width="2"/>
+                    <path d="M50 26C46 24 38 26 36 36C44 38 49 34 50 26Z" fill="#ffffff" stroke="#000" stroke-width="2"/>
+                    <path d="M32 4V60M10 32H54M16 16L48 48M48 16L16 48" stroke="rgba(0,0,0,0.3)" stroke-width="1.5"/>
+                </svg>
+            `,
+            ironman: `
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M32 4C19 4 12 14 12 30C12 46 20 58 32 60C44 58 52 46 52 30C52 14 45 4 32 4Z" fill="#e60026" stroke="#ffe600" stroke-width="2"/>
+                    <path d="M20 16L26 22H38L44 16L46 34L39 50H25L18 34L20 16Z" fill="#ffd700" stroke="#990000" stroke-width="1.5"/>
+                    <polygon points="20,28 29,30 28,33 19,31" fill="#00f3ff"/>
+                    <polygon points="44,28 35,30 36,33 45,31" fill="#00f3ff"/>
+                    <line x1="26" y1="43" x2="38" y2="43" stroke="#990000" stroke-width="2"/>
+                </svg>
+            `,
+            thor: `
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 28C18 16 24 10 32 10C40 10 46 16 46 28V36H18V28Z" fill="#94a3b8" stroke="#00f3ff" stroke-width="2"/>
+                    <path d="M18 22L6 10L12 26L18 28Z" fill="#e2e8f0" stroke="#00f3ff" stroke-width="1.5"/>
+                    <path d="M46 22L58 10L52 26L46 28Z" fill="#e2e8f0" stroke="#00f3ff" stroke-width="1.5"/>
+                    <path d="M22 30H42V46C42 52 37 56 32 56C27 56 22 52 22 46V30Z" fill="#fde68a"/>
+                    <circle cx="27" cy="36" r="2.5" fill="#00f3ff"/>
+                    <circle cx="37" cy="36" r="2.5" fill="#00f3ff"/>
+                    <path d="M22 42C22 52 27 57 32 57C37 57 42 52 42 42C38 45 26 45 22 42Z" fill="#d97706"/>
+                </svg>
+            `,
+            hulk: `
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="14" y="14" width="36" height="42" rx="10" fill="#22c55e" stroke="#39ff14" stroke-width="2.5"/>
+                    <path d="M12 22C12 10 20 6 32 6C44 6 52 10 52 22L46 18L40 22L32 16L24 22L18 18L12 22Z" fill="#0f172a"/>
+                    <path d="M18 27L28 31M46 27L36 31" stroke="#052e16" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="24" cy="32" r="2.5" fill="#ffffff"/>
+                    <circle cx="40" cy="32" r="2.5" fill="#ffffff"/>
+                    <rect x="22" y="42" width="20" height="8" rx="2" fill="#052e16" stroke="#39ff14" stroke-width="1"/>
+                    <line x1="22" y1="46" x2="42" y2="46" stroke="#ffffff" stroke-width="2" stroke-dasharray="3 2"/>
+                </svg>
+            `
+        };
+
+        function updateCoinUI() {
+            document.getElementById('coinDisplay').innerText = `${coins}원`;
+        }
+
+        function spawnCoinPopup(x, y, amount) {
+            const pop = document.createElement('div');
+            pop.className = 'coin-pop';
+            pop.style.left = x + 'px';
+            pop.style.top = (y - 20) + 'px';
+            pop.innerText = `+${amount}원 🪙`;
+            document.body.appendChild(pop);
+            setTimeout(() => pop.remove(), 800);
+        }
+
+        function showShopToast(msg, color = 'var(--neon-cyan)') {
+            const toast = document.getElementById('shopToast');
+            toast.style.color = color;
+            toast.innerText = msg;
+            setTimeout(() => {
+                if (toast.innerText === msg) toast.innerText = '';
+            }, 3000);
+        }
+
+        function handleSkinAction(skinName, price) {
+            if (!unlockedSkins[skinName]) {
+                if (coins >= price) {
+                    coins -= price;
+                    unlockedSkins[skinName] = true;
+                    updateCoinUI();
+                    equipSkin(skinName);
+                    const heroLabels = { ironman: '아이언맨', thor: '토르', hulk: '헐크' };
+                    const heroLabel = heroLabels[skinName] || skinName;
+                    showShopToast(`🎉 ${heroLabel} 스킨 구매 및 장착 완료!`, 'var(--neon-yellow)');
+                    confetti({
+                        particleCount: 70,
+                        spread: 65,
+                        origin: { y: 0.7 },
+                        colors: ['#00f3ff', '#ffe600', '#ff007f', '#39ff14']
+                    });
+                } else {
+                    showShopToast(`❌ 코인이 부족합니다! (${price - coins}원 더 필요해요)`, 'var(--neon-pink)');
+                }
+            } else {
+                equipSkin(skinName);
+            }
+        }
+
+        function equipSkin(skinName) {
+            if (!unlockedSkins[skinName]) return;
+            currentSkin = skinName;
+
+            // Update floating character SVG & Dungeon center hero
+            const wrapper = document.getElementById('heroSvgWrapper');
+            const dungeonHero = document.getElementById('dungeonHeroCenter');
+            const spideyChar = document.getElementById('spideyChar');
+            const webLine = document.getElementById('webLine');
+            wrapper.innerHTML = SKIN_SVGS[skinName];
+            if (dungeonHero) dungeonHero.innerHTML = SKIN_SVGS[skinName];
+
+            if (skinName === 'ironman') {
+                spideyChar.style.filter = 'drop-shadow(0 0 12px #ffe600)';
+                webLine.style.stroke = '#ff2a00';
+                webLine.style.filter = 'drop-shadow(0 0 8px #ffe600)';
+            } else if (skinName === 'thor') {
+                spideyChar.style.filter = 'drop-shadow(0 0 14px var(--neon-cyan))';
+                webLine.style.stroke = '#00f3ff';
+                webLine.style.filter = 'drop-shadow(0 0 10px #ffffff)';
+            } else if (skinName === 'hulk') {
+                spideyChar.style.filter = 'drop-shadow(0 0 15px #39ff14)';
+                webLine.style.stroke = '#39ff14';
+                webLine.style.filter = 'drop-shadow(0 0 10px #22c55e)';
+            } else {
+                spideyChar.style.filter = 'drop-shadow(0 0 10px var(--neon-pink))';
+                webLine.style.stroke = 'var(--neon-cyan)';
+                webLine.style.filter = 'drop-shadow(0 0 6px var(--neon-cyan))';
+            }
+
+            // Update Shop Cards UI
+            const allSkins = ['spidey', 'ironman', 'thor', 'hulk'];
+            allSkins.forEach(s => {
+                const card = document.getElementById(`card-${s}`);
+                const btn = document.getElementById(`btn-${s}`);
+                if (!card || !btn) return;
+
+                if (s === skinName) {
+                    card.classList.add('equipped');
+                    btn.className = 'skin-action-btn btn-equipped';
+                    btn.innerText = '✅ 장착 중';
+                } else {
+                    card.classList.remove('equipped');
+                    if (unlockedSkins[s]) {
+                        btn.className = 'skin-action-btn btn-equip';
+                        btn.innerText = '🔄 장착하기';
+                    }
+                }
+            });
+        }
+
+        /* Spidey / Hero Wall Crawling & Shooting Animation Logic */
+        (function initSpideyAnimation() {
+            const spidey = document.getElementById('spideyChar');
+            const webLine = document.getElementById('webLine');
+            const svgLayer = document.getElementById('spideySvgLayer');
+
+            let isLeftWall = true;
+            let currentY = 120; // Top offset in px
+            let isHolding = false;
+            let rapidFireInterval = null;
+
+            function moveSpidey() {
+                if (isHolding) {
+                    setTimeout(moveSpidey, 2000);
+                    return;
+                }
+
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+
+                const targetY = Math.random() * (screenHeight * 0.7) + (screenHeight * 0.1);
+                const startX = isLeftWall ? 25 : screenWidth - 25;
+                const targetX = isLeftWall ? screenWidth - 25 : 25;
+
+                webLine.setAttribute('x1', startX);
+                webLine.setAttribute('y1', currentY);
+                webLine.setAttribute('x2', targetX);
+                webLine.setAttribute('y2', targetY);
+                webLine.style.opacity = '1';
+
+                spidey.style.transition = 'all 1.8s cubic-bezier(0.45, 0.05, 0.55, 0.95)';
+                spidey.style.left = targetX + 'px';
+                spidey.style.top = targetY + 'px';
+
+                const flipAngle = isLeftWall ? 45 : -45;
+                spidey.style.transform = `translate(-50%, -50%) rotate(${flipAngle}deg)`;
+
+                const hintBubble = spidey.querySelector('.spidey-hint-bubble');
+                const reward = SKIN_REWARDS[currentSkin];
+                const actionWords = {
+                    ironman: '레이저 연사! ⚡',
+                    thor: '망치 투척! 🔨',
+                    hulk: '사람 던지기! 😱',
+                    spidey: '거미줄 연사! 🕸️'
+                };
+                const actionWord = actionWords[currentSkin] || '거미줄 연사! 🕸️';
+                if (hintBubble) {
+                    if (isLeftWall) {
+                        hintBubble.style.left = '55px';
+                        hintBubble.style.right = 'auto';
+                        hintBubble.innerText = `👈 누르면 +${reward}원! 꾹~ ${actionWord}`;
+                    } else {
+                        hintBubble.style.left = 'auto';
+                        hintBubble.style.right = '55px';
+                        hintBubble.innerText = `+${reward}원! 눌러서 ${actionWord}👉`;
+                    }
+                }
+
+                setTimeout(() => {
+                    webLine.style.opacity = '0';
+                    spidey.style.transform = `translate(-50%, -50%) scaleX(${isLeftWall ? -1 : 1})`;
+                }, 1800);
+
+                isLeftWall = !isLeftWall;
+                currentY = targetY;
+
+                setTimeout(moveSpidey, 3500 + Math.random() * 1500);
+            }
+
+            function shootHeroAttack() {
+                const rect = spidey.getBoundingClientRect();
+                const startX = rect.left + rect.width / 2;
+                const startY = rect.top + rect.height / 2;
+
+                const targetX = Math.random() * (window.innerWidth * 0.8) + (window.innerWidth * 0.1);
+                const targetY = Math.random() * (window.innerHeight * 0.8) + (window.innerHeight * 0.1);
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', startX);
+                line.setAttribute('y1', startY);
+                line.setAttribute('x2', targetX);
+                line.setAttribute('y2', targetY);
+
+                if (currentSkin === 'ironman') {
+                    // Iron Man Laser Beam Attack
+                    line.setAttribute('class', 'shot-laser-line');
+                    svgLayer.appendChild(line);
+
+                    const splat = document.createElement('div');
+                    splat.className = 'laser-splat';
+                    splat.style.left = targetX + 'px';
+                    splat.style.top = targetY + 'px';
+                    splat.innerHTML = `
+                        <svg width="85" height="85" viewBox="0 0 100 100" fill="none">
+                            <polygon points="50,5 62,35 95,35 68,55 78,88 50,68 22,88 32,55 5,35 38,35" fill="rgba(255, 230, 0, 0.6)" stroke="#ff2a00" stroke-width="3"/>
+                            <circle cx="50" cy="50" r="16" fill="#ffffff" filter="drop-shadow(0 0 10px #00f3ff)"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(splat);
+
+                    setTimeout(() => line.remove(), 250);
+                    setTimeout(() => splat.remove(), 1500);
+                } else if (currentSkin === 'thor') {
+                    // Thor Spinning Hammer (Mjolnir) Throw & Lightning Attack
+                    const hammer = document.createElement('div');
+                    hammer.className = 'thrown-hammer';
+                    hammer.style.left = startX + 'px';
+                    hammer.style.top = startY + 'px';
+                    hammer.style.transform = 'translate(-50%, -50%) rotate(0deg) scale(0.8)';
+                    hammer.innerHTML = `
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <!-- Hammer Head -->
+                            <rect x="10" y="6" width="28" height="18" rx="3" fill="#94a3b8" stroke="#00f3ff" stroke-width="2.5"/>
+                            <line x1="15" y1="6" x2="15" y2="24" stroke="#e2e8f0" stroke-width="1.5"/>
+                            <line x1="33" y1="6" x2="33" y2="24" stroke="#e2e8f0" stroke-width="1.5"/>
+                            <!-- Handle -->
+                            <rect x="21" y="24" width="6" height="18" rx="2" fill="#92400e" stroke="#ffe600" stroke-width="1.5"/>
+                            <!-- Leather Strap -->
+                            <path d="M24 42C24 46 28 47 29 44" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(hammer);
+
+                    const deltaX = targetX - startX;
+                    const deltaY = targetY - startY;
+
+                    requestAnimationFrame(() => {
+                        hammer.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px) rotate(720deg) scale(1.25)`;
+                    });
+
+                    setTimeout(() => {
+                        hammer.remove();
+                        // Lightning Impact Explosion
+                        const splat = document.createElement('div');
+                        splat.className = 'lightning-splat';
+                        splat.style.left = targetX + 'px';
+                        splat.style.top = targetY + 'px';
+                        splat.innerHTML = `
+                            <svg width="95" height="95" viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="35" stroke="#00f3ff" stroke-width="3" stroke-dasharray="10 6" fill="rgba(0, 243, 255, 0.25)"/>
+                                <polygon points="55,5 30,48 48,48 42,95 72,45 52,45" fill="#ffffff" stroke="#00f3ff" stroke-width="2"/>
+                                <path d="M15 25 L35 45 M85 25 L65 45 M15 75 L35 55 M85 75 L65 55" stroke="#ffe600" stroke-width="3" stroke-linecap="round"/>
+                            </svg>
+                        `;
+                        document.body.appendChild(splat);
+                        setTimeout(() => splat.remove(), 1400);
+                    }, 340);
+                } else if (currentSkin === 'hulk') {
+                    // Hulk Throws Screaming Person ("꺄아아아악~!! 😱")
+                    playScreamSound();
+                    const screams = ['꺄아아아악~!! 😱', '살려줘어어억!! 😵', '으아아아아악!! 💦', '꺄아악! 날아간다!! 😱'];
+                    const screamText = screams[Math.floor(Math.random() * screams.length)];
+
+                    const person = document.createElement('div');
+                    person.className = 'thrown-person';
+                    person.style.left = startX + 'px';
+                    person.style.top = startY + 'px';
+                    person.style.transform = 'translate(-50%, -50%) rotate(0deg) scale(0.9)';
+                    person.innerHTML = `
+                        <div class="scream-bubble">${screamText}</div>
+                        <svg width="46" height="46" viewBox="0 0 48 48" fill="none">
+                            <!-- Panicked Person Head -->
+                            <circle cx="24" cy="11" r="6" fill="#fde68a" stroke="#ff007f" stroke-width="1.5"/>
+                            <!-- Screaming Wide Open Mouth -->
+                            <ellipse cx="24" cy="13" rx="2.5" ry="3.2" fill="#991b1b"/>
+                            <!-- Flailing Arms Up in Panic -->
+                            <path d="M24 20 L10 8 M24 20 L38 8" stroke="#00f3ff" stroke-width="3.5" stroke-linecap="round"/>
+                            <!-- Torso -->
+                            <line x1="24" y1="17" x2="24" y2="32" stroke="#ffe600" stroke-width="4.5" stroke-linecap="round"/>
+                            <!-- Flailing Legs -->
+                            <path d="M24 32 L13 44 M24 32 L35 44" stroke="#ff007f" stroke-width="3.5" stroke-linecap="round"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(person);
+
+                    const deltaX = targetX - startX;
+                    const deltaY = targetY - startY;
+
+                    requestAnimationFrame(() => {
+                        person.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px) rotate(1080deg) scale(1.25)`;
+                    });
+
+                    setTimeout(() => {
+                        person.remove();
+                        // Hulk Ground Smash Impact
+                        const splat = document.createElement('div');
+                        splat.className = 'hulk-smash-splat';
+                        splat.style.left = targetX + 'px';
+                        splat.style.top = targetY + 'px';
+                        splat.innerHTML = `
+                            <svg width="110" height="110" viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="40" stroke="#39ff14" stroke-width="4" stroke-dasharray="12 6" fill="rgba(34, 197, 94, 0.3)"/>
+                                <text x="50" y="55" text-anchor="middle" fill="#ffe600" font-weight="900" font-size="18" stroke="#052e16" stroke-width="1">SMASH! 💥</text>
+                            </svg>
+                        `;
+                        document.body.appendChild(splat);
+                        setTimeout(() => splat.remove(), 1500);
+                    }, 540);
+                } else {
+                    // Spider-Man Web Attack
+                    line.setAttribute('class', 'shot-web-line');
+                    svgLayer.appendChild(line);
+
+                    const splat = document.createElement('div');
+                    splat.className = 'web-splat';
+                    splat.style.left = targetX + 'px';
+                    splat.style.top = targetY + 'px';
+                    splat.innerHTML = `
+                        <svg width="75" height="75" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 0L50 100M0 50L100 50M15 15L85 85M85 15L15 85" stroke="#00f3ff" stroke-width="2.5" opacity="0.9"/>
+                            <circle cx="50" cy="50" r="14" stroke="#ffffff" stroke-width="2" fill="rgba(0,243,255,0.3)"/>
+                            <circle cx="50" cy="50" r="28" stroke="#ff007f" stroke-width="1.5" stroke-dasharray="4 3"/>
+                            <circle cx="50" cy="50" r="42" stroke="#ffe600" stroke-width="1" stroke-dasharray="2 4" opacity="0.7"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(splat);
+
+                    spawnBabySpiders(targetX, targetY);
+
+                    setTimeout(() => line.remove(), 350);
+                    setTimeout(() => splat.remove(), 2500);
+                }
+
+                if (navigator.vibrate) {
+                    navigator.vibrate(15);
+                }
+            }
+
+            function spawnBabySpiders(originX, originY) {
+                const spiderCount = 10;
+                
+                for (let i = 0; i < spiderCount; i++) {
+                    const spider = document.createElement('div');
+                    spider.className = 'neon-spider';
+                    spider.style.left = originX + 'px';
+                    spider.style.top = originY + 'px';
+                    
+                    const color = i % 2 === 0 ? '#00f3ff' : '#ff007f';
+                    spider.innerHTML = `
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <circle cx="16" cy="16" r="6" fill="${color}"/>
+                            <circle cx="16" cy="9" r="4" fill="${color}"/>
+                            <path d="M12 14 L4 8 M12 16 L2 16 M12 18 L4 24 M12 20 L6 30" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M20 14 L28 8 M20 16 L30 16 M20 18 L28 24 M20 20 L26 30" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    `;
+                    document.body.appendChild(spider);
+
+                    const angle = (Math.PI * 2 * i / spiderCount) + (Math.random() * 0.5 - 0.25);
+                    const runDistance = Math.max(window.innerWidth, window.innerHeight) * 0.8;
+                    const destX = Math.cos(angle) * runDistance;
+                    const destY = Math.sin(angle) * runDistance;
+                    const rotationDeg = (angle * 180 / Math.PI) + 90;
+
+                    requestAnimationFrame(() => {
+                        spider.style.transform = `translate(-50%, -50%) translate(${destX}px, ${destY}px) rotate(${rotationDeg}deg)`;
+                        spider.style.opacity = '0';
+                    });
+
+                    setTimeout(() => spider.remove(), 1400);
+                }
+            }
+
+            function startRapidFire(e) {
+                if (e) e.preventDefault();
+                isHolding = true;
+
+                // Earn coins based on equipped hero (+1원 Spidey, +2원 Iron Man, +3원 Thor, +5원 Hulk)
+                const reward = SKIN_REWARDS[currentSkin] || 1;
+                coins += reward;
+                updateCoinUI();
+                const rect = spidey.getBoundingClientRect();
+                spawnCoinPopup(rect.left + rect.width / 2, rect.top, reward);
+
+                shootHeroAttack();
+                rapidFireInterval = setInterval(shootHeroAttack, 60);
+            }
+
+            function stopRapidFire() {
+                isHolding = false;
+                if (rapidFireInterval) {
+                    clearInterval(rapidFireInterval);
+                    rapidFireInterval = null;
+                }
+            }
+
+            spidey.addEventListener('mousedown', startRapidFire);
+            window.addEventListener('mouseup', stopRapidFire);
+
+            spidey.addEventListener('touchstart', startRapidFire, { passive: false });
+            window.addEventListener('touchend', stopRapidFire);
+            window.addEventListener('touchcancel', stopRapidFire);
+
+            setTimeout(moveSpidey, 1500);
+        })();
+
+        /* Ultimate Skill System (Spacebar, 30s Cooldown, 2x Coin Reward) */
+        let ultCooldown = 0;
+        let ultTimerInterval = null;
+
+        function showUltBanner(titleText, borderColor = 'var(--neon-yellow)') {
+            const banner = document.createElement('div');
+            banner.className = 'ult-banner';
+            banner.style.borderColor = borderColor;
+            banner.innerText = titleText;
+            document.body.appendChild(banner);
+            setTimeout(() => banner.remove(), 1650);
+        }
+
+        function triggerUltimate() {
+            if (ultCooldown > 0) return;
+
+            // Start 30-second cooldown
+            ultCooldown = 30;
+            const ultBtn = document.getElementById('ultHudBtn');
+            ultBtn.disabled = true;
+            ultBtn.innerText = `⏳ 궁극기 쿨타임: ${ultCooldown}초`;
+
+            ultTimerInterval = setInterval(() => {
+                ultCooldown--;
+                if (ultCooldown <= 0) {
+                    clearInterval(ultTimerInterval);
+                    ultCooldown = 0;
+                    ultBtn.disabled = false;
+                    ultBtn.innerText = '⚡ 궁극기 준비완료! [Space]';
+                } else {
+                    ultBtn.innerText = `⏳ 궁극기 쿨타임: ${ultCooldown}초`;
+                }
+            }, 1000);
+
+            // Grant 2x current hero's earning
+            const baseEarn = SKIN_REWARDS[currentSkin] || 1;
+            const ultReward = baseEarn * 2;
+            coins += ultReward;
+            updateCoinUI();
+
+            const spidey = document.getElementById('spideyChar');
+            const rect = spidey.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+            spawnCoinPopup(originX, originY, ultReward);
+
+            // Execute Hero-Specific Ultimate Visuals
+            const svgLayer = document.getElementById('spideySvgLayer');
+
+            if (currentSkin === 'spidey') {
+                showUltBanner('🕷️ 궁극기: 네온 거미줄 대폭풍! (+2원)', '#00f3ff');
+                for (let i = 0; i < 12; i++) {
+                    setTimeout(() => {
+                        const tx = (window.innerWidth * 0.1) + Math.random() * (window.innerWidth * 0.8);
+                        const ty = (window.innerHeight * 0.1) + Math.random() * (window.innerHeight * 0.8);
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', originX);
+                        line.setAttribute('y1', originY);
+                        line.setAttribute('x2', tx);
+                        line.setAttribute('y2', ty);
+                        line.setAttribute('class', 'shot-web-line');
+                        line.style.strokeWidth = '4';
+                        svgLayer.appendChild(line);
+                        setTimeout(() => line.remove(), 400);
+
+                        const splat = document.createElement('div');
+                        splat.className = 'web-splat';
+                        splat.style.left = tx + 'px';
+                        splat.style.top = ty + 'px';
+                        splat.innerHTML = `<svg width="95" height="95" viewBox="0 0 100 100" fill="none"><path d="M50 0L50 100M0 50L100 50M15 15L85 85M85 15L15 85" stroke="#00f3ff" stroke-width="3"/><circle cx="50" cy="50" r="24" stroke="#ff007f" stroke-width="2.5"/></svg>`;
+                        document.body.appendChild(splat);
+                        setTimeout(() => splat.remove(), 2200);
+                    }, i * 55);
+                }
+            } else if (currentSkin === 'ironman') {
+                showUltBanner('🤖 궁극기: 유니빔 풀파워 오버드라이브! (+4원)', '#ff2a00');
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        const tx = Math.random() * window.innerWidth;
+                        const ty = Math.random() * window.innerHeight;
+                        const beam = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        beam.setAttribute('x1', originX);
+                        beam.setAttribute('y1', originY);
+                        beam.setAttribute('x2', tx);
+                        beam.setAttribute('y2', ty);
+                        beam.setAttribute('class', 'shot-laser-line');
+                        beam.style.strokeWidth = '9';
+                        svgLayer.appendChild(beam);
+                        setTimeout(() => beam.remove(), 350);
+
+                        const boom = document.createElement('div');
+                        boom.className = 'laser-splat';
+                        boom.style.left = tx + 'px';
+                        boom.style.top = ty + 'px';
+                        boom.innerHTML = `<svg width="130" height="130" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="42" fill="rgba(255, 42, 0, 0.45)" stroke="#ffe600" stroke-width="4"/><circle cx="50" cy="50" r="20" fill="#ffffff"/></svg>`;
+                        document.body.appendChild(boom);
+                        setTimeout(() => boom.remove(), 1400);
+                    }, i * 60);
+                }
+            } else if (currentSkin === 'thor') {
+                showUltBanner('⚡ 궁극기: 라그나로크 천둥 번개 강림! (+6원)', '#00f3ff');
+                document.body.classList.remove('screen-quake');
+                void document.body.offsetWidth;
+                document.body.classList.add('screen-quake');
+
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        const strikeX = (window.innerWidth * 0.12) + (i * (window.innerWidth * 0.1));
+                        const strikeY = window.innerHeight * (0.35 + Math.random() * 0.45);
+                        const bolt = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+                        bolt.setAttribute('points', `${strikeX},0 ${strikeX - 25},${strikeY * 0.4} ${strikeX + 25},${strikeY * 0.7} ${strikeX},${strikeY}`);
+                        bolt.setAttribute('fill', 'none');
+                        bolt.setAttribute('stroke', '#00f3ff');
+                        bolt.setAttribute('stroke-width', '7');
+                        bolt.style.filter = 'drop-shadow(0 0 15px #ffffff)';
+                        svgLayer.appendChild(bolt);
+                        setTimeout(() => bolt.remove(), 450);
+
+                        const shock = document.createElement('div');
+                        shock.className = 'lightning-splat';
+                        shock.style.left = strikeX + 'px';
+                        shock.style.top = strikeY + 'px';
+                        shock.innerHTML = `<svg width="120" height="120" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="42" stroke="#ffe600" stroke-width="4" fill="rgba(0, 243, 255, 0.35)"/><polygon points="55,5 30,48 48,48 42,95 72,45 52,45" fill="#ffffff"/></svg>`;
+                        document.body.appendChild(shock);
+                        setTimeout(() => shock.remove(), 1400);
+                    }, i * 80);
+                }
+            } else if (currentSkin === 'hulk') {
+                showUltBanner('💚 궁극기: 월드 브레이커 대지진! (+10원)', '#39ff14');
+                document.body.classList.remove('screen-quake');
+                void document.body.offsetWidth;
+                document.body.classList.add('screen-quake');
+                playScreamSound();
+
+                const crowdScreams = ['꺄아아아아악~!! 😱', '단체 비행이다아악!! 😵', '살려주세요 헐크님!! 💦', '으아아아악 우주까지 간다!! 🚀'];
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        const tx = Math.random() * window.innerWidth;
+                        const ty = Math.random() * window.innerHeight;
+                        const person = document.createElement('div');
+                        person.className = 'thrown-person';
+                        person.style.left = originX + 'px';
+                        person.style.top = originY + 'px';
+                        person.innerHTML = `
+                            <div class="scream-bubble">${crowdScreams[i % crowdScreams.length]}</div>
+                            <svg width="52" height="52" viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="11" r="6" fill="#fde68a" stroke="#39ff14" stroke-width="2"/>
+                                <ellipse cx="24" cy="13" rx="3" ry="3.5" fill="#991b1b"/>
+                                <path d="M24 20 L8 6 M24 20 L40 6" stroke="#00f3ff" stroke-width="4" stroke-linecap="round"/>
+                                <line x1="24" y1="17" x2="24" y2="32" stroke="#ffe600" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M24 32 L11 45 M24 32 L37 45" stroke="#ff007f" stroke-width="4" stroke-linecap="round"/>
+                            </svg>
+                        `;
+                        document.body.appendChild(person);
+                        requestAnimationFrame(() => {
+                            person.style.transform = `translate(-50%, -50%) translate(${tx - originX}px, ${ty - originY}px) rotate(1440deg) scale(1.4)`;
+                        });
+                        setTimeout(() => person.remove(), 650);
+                    }, i * 70);
+                }
+            }
+
+            // If inside Dungeon, also deal massive AoE damage to all dungeon enemies!
+            if (dungeonActive && dungeonEnemies.length > 0) {
+                [...dungeonEnemies].forEach(enemy => {
+                    enemy.hp -= (HERO_DAMAGE[currentSkin] || 1) * 4;
+                    damageEnemy(enemy);
+                });
+            }
+
+            confetti({
+                particleCount: 90,
+                spread: 85,
+                origin: { y: 0.5 }
+            });
+        }
+
+        // Listen for Spacebar press to trigger Ultimate
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                triggerUltimate();
+            }
+        });
+
+        /* Flip Card Logic */
+        function flipCard(cardElement) {
+            cardElement.classList.toggle('flipped');
+        }
+
+        /* Spit Venom Attack on Peeking Spider Head Click */
+        function spitVenom(event) {
+            event.stopPropagation(); // Prevents flipping the card
+
+            const rect = event.currentTarget.getBoundingClientRect();
+            const startX = rect.left + rect.width / 2;
+            const startY = rect.top + rect.height / 2;
+
+            // Target around center of screen
+            const targetX = window.innerWidth / 2 + (Math.random() * 160 - 80);
+            const targetY = window.innerHeight / 2 + (Math.random() * 160 - 80);
+
+            // Create Spit Liquid Splat Graphic & Text
+            const spit = document.createElement('div');
+            spit.className = 'spider-spit-splat';
+            spit.style.left = targetX + 'px';
+            spit.style.top = targetY + 'px';
+            spit.innerHTML = `
+                <div class="spit-text-effect">캬아아악 퉤-! 💦</div>
+                <svg width="130" height="130" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="20" fill="rgba(0, 243, 255, 0.6)" filter="drop-shadow(0 0 10px #00f3ff)"/>
+                    <circle cx="35" cy="40" r="8" fill="rgba(255, 0, 127, 0.7)"/>
+                    <circle cx="65" cy="55" r="12" fill="rgba(0, 243, 255, 0.8)"/>
+                    <path d="M45 25 C30 10, 20 40, 15 50 C10 60, 40 85, 55 75 C70 65, 85 45, 75 35 C65 25, 60 40, 45 25 Z" fill="rgba(0, 243, 255, 0.4)"/>
+                    <circle cx="48" cy="48" r="5" fill="#ffffff"/>
+                </svg>
+            `;
+            document.body.appendChild(spit);
+
+            if (navigator.vibrate) {
+                navigator.vibrate([20, 40, 20]);
+            }
+
+            setTimeout(() => spit.remove(), 2800);
+        }
+
+        /* OX Quiz Logic */
+        function checkAnswer(isO) {
+            const resultMsg = document.getElementById('quizResult');
+            const quizSection = resultMsg.parentElement;
+
+            if (isO) {
+                resultMsg.style.color = 'var(--neon-cyan)';
+                resultMsg.innerText = '🎉 정답입니다! 숩바이더맨의 키는 170cm가 넘습니다! 🥳';
+                
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#00f3ff', '#ff007f', '#ffe600', '#ffffff']
+                });
+            } else {
+                resultMsg.style.color = 'var(--neon-pink)';
+                resultMsg.innerText = '😅 아쉬워요! 숩바이더맨은 170cm보다 큽니다! 다시 도전해 보세요! 💥';
+                
+                quizSection.classList.remove('shake');
+                void quizSection.offsetWidth;
+                quizSection.classList.add('shake');
+            }
+        }
+
+        /* Fortune Generator Logic */
+        const fortunes = [
+            "🕷️ 오늘은 거미줄처럼 끈기 있게 임하면 모든 일이 착착 풀리는 날!",
+            "⚡ 영웅의 피가 끓어오르는 최고의 하루! 도전하고 싶었던 일을 시작해보세요.",
+            "🍳 맛있는 김치볶음밥을 먹으면 행운이 300% 상승할 예정입니다!",
+            "🎮 오늘 게임 연속 승리 각! 당신의 피지컬이 절정에 달하는 날입니다.",
+            "🎨 창의력이 뿜뿜 터지는 날! 낙서라도 한 장 그려보면 걸작이 탄생합니다.",
+            "✨ 생각지 못한 곳에서 귀인을 만나 거미줄처럼 끈끈한 우정을 맺게 됩니다.",
+            "🌃 밤거리의 네온사인처럼 당신의 존재감이 환하게 빛나는 하루가 될 거예요.",
+            "🦸 소소한 선행 하나가 누군가에겐 영웅의 구원처럼 느껴지는 날입니다.",
+            "🎯 목표했던 일을 한 방에 명중시킬 수 있는 어마어마한 집중력이 찾아옵니다!",
+            "🍕 맛있는 야식을 먹어도 칼로리가 0kcal처럼 느껴지는 행복한 날!",
+            "🌈 긍정의 에너지가 넘쳐흘러 주변 사람들에게 웃음을 전달해 줍니다.",
+            "☕ 따뜻한 음료 한 잔과 함께 느긋한 휴식을 취하면 대운이 따라옵니다."
+        ];
+
+        function generateFortune() {
+            const fortuneBox = document.getElementById('fortuneBox');
+            const fortuneText = document.getElementById('fortuneText');
+            const spiderContainer = document.getElementById('hangingSpiderContainer');
+
+            spiderContainer.classList.add('descend');
+
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            
+            setTimeout(() => {
+                fortuneText.innerText = fortunes[randomIndex];
+                fortuneBox.style.display = 'block';
+
+                setTimeout(() => {
+                    spiderContainer.classList.remove('descend');
+                }, 400);
+            }, 600);
+        }
+
+        /* Neon Spider Dungeon System */
+        let dungeonActive = false;
+        let dungeonKills = 0;
+        let dungeonWave = 1;
+        let dungeonHp = 100;
+        let dungeonEnemies = [];
+        let spawnTimer = null;
+        let moveTimer = null;
+
+        const HERO_DAMAGE = {
+            spidey: 1,
+            ironman: 2,
+            thor: 3,
+            hulk: 5
+        };
+
+        function toggleDungeon() {
+            const arena = document.getElementById('dungeonArena');
+            const btn = document.getElementById('dungeonToggleBtn');
+            const heroCenter = document.getElementById('dungeonHeroCenter');
+
+            dungeonActive = !dungeonActive;
+
+            if (dungeonActive) {
+                arena.style.display = 'block';
+                btn.innerText = '🚪 던전 나가기';
+                heroCenter.innerHTML = SKIN_SVGS[currentSkin];
+                resetDungeon();
+                spawnTimer = setInterval(spawnDungeonEnemy, 1300);
+                moveTimer = setInterval(updateDungeonEnemies, 50);
+            } else {
+                arena.style.display = 'none';
+                btn.innerText = '🚪 던전 입장하기';
+                clearInterval(spawnTimer);
+                clearInterval(moveTimer);
+                clearEnemiesDOM();
+            }
+        }
+
+        function resetDungeon() {
+            dungeonKills = 0;
+            dungeonWave = 1;
+            dungeonHp = 100;
+            clearEnemiesDOM();
+            updateDungeonHUD();
+        }
+
+        function clearEnemiesDOM() {
+            dungeonEnemies.forEach(e => e.el.remove());
+            dungeonEnemies = [];
+        }
+
+        function updateDungeonHUD() {
+            document.getElementById('dungeonKills').innerText = dungeonKills;
+            document.getElementById('dungeonWave').innerText = dungeonWave;
+            document.getElementById('dungeonHp').innerText = dungeonHp;
+        }
+
+        function spawnDungeonEnemy() {
+            if (!dungeonActive) return;
+            const arena = document.getElementById('dungeonArena');
+            const w = arena.clientWidth;
+            const h = arena.clientHeight;
+
+            // Spawn on random edge of arena
+            const edge = Math.floor(Math.random() * 4);
+            let x = 0, y = 0;
+            if (edge === 0) { x = Math.random() * w; y = 10; }
+            else if (edge === 1) { x = w - 10; y = Math.random() * h; }
+            else if (edge === 2) { x = Math.random() * w; y = h - 10; }
+            else { x = 10; y = Math.random() * h; }
+
+            const isBoss = Math.random() < 0.2;
+            const maxHp = isBoss ? (3 + dungeonWave * 2) : (1 + Math.floor(dungeonWave / 2));
+
+            const el = document.createElement('div');
+            el.className = 'dungeon-enemy';
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            const color = isBoss ? '#ffe600' : '#ff007f';
+            const size = isBoss ? 54 : 40;
+            el.style.width = size + 'px';
+            el.style.height = size + 'px';
+
+            el.innerHTML = `
+                <div class="enemy-hp-bar"><div class="enemy-hp-fill"></div></div>
+                <svg viewBox="0 0 36 36" fill="none">
+                    <circle cx="18" cy="18" r="8" fill="${color}" stroke="#00f3ff" stroke-width="1.5"/>
+                    <circle cx="18" cy="10" r="5" fill="${color}"/>
+                    <circle cx="16" cy="9" r="1.5" fill="#fff"/>
+                    <circle cx="20" cy="9" r="1.5" fill="#fff"/>
+                    <path d="M12 15 L3 8 M12 18 L2 18 M12 21 L3 28 M24 15 L33 8 M24 18 L34 18 M24 21 L33 28" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            `;
+
+            const enemyObj = {
+                id: Date.now() + Math.random(),
+                x, y,
+                hp: maxHp,
+                maxHp,
+                isBoss,
+                speed: isBoss ? 1.1 : (1.6 + dungeonWave * 0.15),
+                el
+            };
+
+            el.onmousedown = (ev) => {
+                ev.stopPropagation();
+                damageEnemy(enemyObj, ev);
+            };
+            el.ontouchstart = (ev) => {
+                ev.stopPropagation();
+                ev.preventDefault();
+                damageEnemy(enemyObj, ev);
+            };
+
+            arena.appendChild(el);
+            dungeonEnemies.push(enemyObj);
+        }
+
+        function arenaAttack(ev) {
+            if (!dungeonActive) return;
+            const arena = document.getElementById('dungeonArena');
+            const rect = arena.getBoundingClientRect();
+            const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+            const clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
+            const clickX = clientX - rect.left;
+            const clickY = clientY - rect.top;
+
+            drawDungeonProjectile(clickX, clickY);
+
+            // Splash damage check near click
+            const splashRadius = currentSkin === 'hulk' ? 75 : (currentSkin === 'thor' ? 65 : 48);
+            [...dungeonEnemies].forEach(enemy => {
+                const dist = Math.hypot(enemy.x - clickX, enemy.y - clickY);
+                if (dist <= splashRadius) {
+                    damageEnemy(enemy);
+                }
+            });
+        }
+
+        function drawDungeonProjectile(targetX, targetY) {
+            const arena = document.getElementById('dungeonArena');
+            const svg = document.getElementById('dungeonSvgOverlay');
+            const startX = arena.clientWidth / 2;
+            const startY = arena.clientHeight / 2;
+
+            if (currentSkin === 'hulk') {
+                playScreamSound();
+                const miniScream = document.createElement('div');
+                miniScream.style.position = 'absolute';
+                miniScream.style.left = targetX + 'px';
+                miniScream.style.top = targetY + 'px';
+                miniScream.style.transform = 'translate(-50%, -50%)';
+                miniScream.style.color = '#ffe600';
+                miniScream.style.fontWeight = '900';
+                miniScream.style.fontSize = '0.9rem';
+                miniScream.style.textShadow = '0 0 8px #ff007f';
+                miniScream.style.pointerEvents = 'none';
+                miniScream.innerText = '꺄아아악! 😱💥';
+                arena.appendChild(miniScream);
+                setTimeout(() => miniScream.remove(), 450);
+            }
+
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', startX);
+            line.setAttribute('y1', startY);
+            line.setAttribute('x2', targetX);
+            line.setAttribute('y2', targetY);
+            const colors = { spidey: '#00f3ff', ironman: '#ff2a00', thor: '#ffe600', hulk: '#39ff14' };
+            line.setAttribute('stroke', colors[currentSkin] || '#00f3ff');
+            line.setAttribute('stroke-width', currentSkin === 'hulk' ? '5' : '3');
+            svg.appendChild(line);
+            setTimeout(() => line.remove(), 180);
+        }
+
+        function damageEnemy(enemy, ev) {
+            if (ev) {
+                drawDungeonProjectile(enemy.x, enemy.y);
+            }
+            const dmg = HERO_DAMAGE[currentSkin] || 1;
+            enemy.hp -= dmg;
+
+            const fill = enemy.el.querySelector('.enemy-hp-fill');
+            if (fill) {
+                fill.style.width = Math.max(0, (enemy.hp / enemy.maxHp) * 100) + '%';
+            }
+
+            if (enemy.hp <= 0) {
+                const idx = dungeonEnemies.indexOf(enemy);
+                if (idx > -1) {
+                    dungeonEnemies.splice(idx, 1);
+                    enemy.el.remove();
+
+                    dungeonKills++;
+                    if (dungeonKills % 10 === 0) dungeonWave++;
+
+                    const coinGain = enemy.isBoss ? 5 : (SKIN_REWARDS[currentSkin] || 1);
+                    coins += coinGain;
+                    updateCoinUI();
+                    updateDungeonHUD();
+
+                    const arenaRect = document.getElementById('dungeonArena').getBoundingClientRect();
+                    spawnCoinPopup(arenaRect.left + enemy.x, arenaRect.top + enemy.y, coinGain);
+                }
+            }
+        }
+
+        function updateDungeonEnemies() {
+            if (!dungeonActive) return;
+            const arena = document.getElementById('dungeonArena');
+            const centerX = arena.clientWidth / 2;
+            const centerY = arena.clientHeight / 2;
+
+            [...dungeonEnemies].forEach(enemy => {
+                const dx = centerX - enemy.x;
+                const dy = centerY - enemy.y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist < 28) {
+                    // Enemy hits hero
+                    dungeonHp = Math.max(0, dungeonHp - 10);
+                    updateDungeonHUD();
+                    const idx = dungeonEnemies.indexOf(enemy);
+                    if (idx > -1) dungeonEnemies.splice(idx, 1);
+                    enemy.el.remove();
+
+                    if (dungeonHp <= 0) {
+                        showShopToast('💀 던전에서 쓰러졌습니다! 체력을 회복하고 다시 도전하세요!', 'var(--neon-pink)');
+                        resetDungeon();
+                    }
+                } else {
+                    enemy.x += (dx / dist) * enemy.speed;
+                    enemy.y += (dy / dist) * enemy.speed;
+                    enemy.el.style.left = enemy.x + 'px';
+                    enemy.el.style.top = enemy.y + 'px';
+                }
+            });
+        }
+    </script>
 </body></html>
